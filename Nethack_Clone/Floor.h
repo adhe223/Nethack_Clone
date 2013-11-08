@@ -11,9 +11,10 @@ public:
 	
 	void printFloor(std::ostream & output);
 
-	Tile* getTile(int row, int col);
+	Tile * getTile(int row, int col);
 	int getFloor() const;
 	std::vector<std::vector<Tile *>> getMap() const;
+	std::vector<std::vector<Tile *>> & getMapRef();
 	int getHeight() const;
 	int getWidth() const;
 
@@ -38,8 +39,6 @@ private:
 	int iMinRoomHeight; //Smallest Room height
 	int iMaxRoomWidth;	//Largest width a room can have
 	int iMaxRoomHeight;	//Largest height a room can have
-
-	
 };
 
 #endif

@@ -21,9 +21,6 @@
     <ClCompile Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\Tile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\unitTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\Weapon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

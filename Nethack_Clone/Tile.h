@@ -1,7 +1,6 @@
 #ifndef _Tile_included_
 #define _Tile_included_
 
-#include "Entity.h"
 #include "Character.h"
 #include <ostream>
 #include <vector>

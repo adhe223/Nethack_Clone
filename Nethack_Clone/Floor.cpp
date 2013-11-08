@@ -41,6 +41,11 @@ vector<vector<Tile *>> Floor::getMap() const
 	return vMap;
 }
 
+std::vector<std::vector<Tile *>> & Floor::getMapRef()
+{
+	return vMap;
+}
+
 int Floor::getFloor() const
 {
 	return iFloor;
@@ -239,8 +244,8 @@ void Floor::drawStairs()
 	}
 
 	//Now see if downstairs are necessary, if so, place (for PA2 we always place them, so make bDown true)
-	bool bDown = true;		//If we need stairs down
-	//if (iFloor == iNumFloors - 1) {bDown = false;}
+	bool bDown = true;
+	if (iFloor == iNumFloors - 1) {bDown = false;}
 
 	if (bDown)
 	{
@@ -289,7 +294,7 @@ void Floor::drawStairs()
 				bool bIsStairs = false;
 				if (vMap[row][col]->getSymbol() == '>') {bIsStairs = true;}
 
-				//Place the up stairs if there was not a tunnel
+				//Place the down stairs if there was not a tunnel
 				if (!bIsTunnel && !bIsStairs) {vMap[row][col]->setSymbol('<'); dPlaced = true;}
 			}
 		}

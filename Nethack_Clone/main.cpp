@@ -14,6 +14,7 @@
 #include "DungeonLevel.h"
 #include "Tile.h"
 #include "Floor.h"
+#include "XMLSerializable.h"
 
 #include <map>
 #include <vector>
@@ -169,20 +170,43 @@ int main(int argc, char * argv[])
 	cin >> sFilename;
 
 	vector<XMLSerializable*> vObjects;
-	parseXML(sFilename, vObjects);
+	parseXML(sFilename, vObjects);*/
 
-	dumpObjects(vObjects);
+	//dumpObjects(vObjects);
 
-	cout << "Input a filename to output the data to (inlcude .xml): ";
-	string outputFile;
-	cin >> outputFile;
-	ofstream output;
-	output.open(outputFile);
+	//cout << "Input a filename to output the data to (inlcude .xml): ";
+	//string outputFile;
+	//cin >> outputFile;
+	//ofstream output;
+	//output.open(outputFile);
 
-	outputXML(vObjects, output);*/
-	DungeonLevel test(2);
-	test.printDungeon(cout);
+	//outputXML(vObjects, output);
 	
+	DungeonLevel * dl = new DungeonLevel(50);
+	Player * pl = new Player();
+	bool quit = false;
+
+	//Place player in dungeon
+	dl->placePlayer(pl);
+
+	//Main driving logic
+	while (!quit)
+	{
+		dl->getFloor(dl->getCurrentFloor())->printFloor(cout);
+		
+		//Allow the player to enter input
+		char input;
+		cout << endl << "Please enter the action you want to perform: ";
+		cin >> input;
+		
+		if (input == '8' || input == '4' || input == '2' || input == '6')
+		{
+			pl->move(dl->getFloor(dl->getCurrentFloor()), input);
+		}
+		cout << endl;
+	}
+	
+
 	cin.ignore(200, '\n');
 	return 0;
 }

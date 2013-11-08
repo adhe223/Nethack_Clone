@@ -72,5 +72,7 @@ void Tile::setPassable(bool pass)
 
 void Tile::printTile(std::ostream & output)
 {
-	output << getSymbol();
+	//Check if there is a character
+	if (character != NULL) {output << character->getSymbol();}
+	else {output << getSymbol();}
 }

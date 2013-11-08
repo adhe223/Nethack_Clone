@@ -2,20 +2,24 @@
 #define _DungeonLevel_included_
 
 #include <vector>
-#include "Tile.h"
 #include "Floor.h"
+#include "Player.h"
 
 class DungeonLevel
 {
 public:
 	DungeonLevel(int numFloors);		//Constructs map
 
+	void placePlayer(Player * pl);
 	void printDungeon(std::ostream & output);
 	static int randomNumber(int iMax);
 
+	int getCurrentFloor();
 	std::vector<Floor *> getFloors() const;
+	Floor * getFloor(int numFloor);
 
 private:
+	int currFloor;	//Current floor for player
 	int iNumFloors;	//Number of floors in dungeon
 	std::vector<Floor *> vFloors;	//Vector of floors in dungeon
 	int iWidth;		//width of dungeon. We will not make getter setter because we want it to always be 79 for now

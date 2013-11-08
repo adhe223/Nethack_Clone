@@ -1,15 +1,14 @@
 #ifndef _Character_included_
 #define _Character_included_
 
+#include <ostream>
 #include "Entity.h"
-#include "Floor.h"
 
 class Character : public Entity
 {
 public:
 	Character();
 
-	virtual void move(Floor* fl, int dir);
 	virtual void attack(Character & target);
 
 	virtual int getHealth();
@@ -25,9 +24,8 @@ public:
 	virtual void writeDataAsFragment(ostream & output);
 	virtual void setElementData(std::string sElementName, std::string sValue);
 
+	
 private:
-	bool canMove(int row, int col, Floor* fl);	//Helper function to check if a tile can be moved into (no monster and passable)
-
 	int m_iHealth;
 	int iRow;
 	int iCol;
