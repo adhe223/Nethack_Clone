@@ -203,10 +203,13 @@ int main(int argc, char * argv[])
 		{
 			pl->move(dl->getFloor(dl->getCurrentFloor()), input);
 		}
+
+
+		pl->regen();
+		pl->levelUp();
 		cout << endl;
 	}
 	
-
 	cin.ignore(200, '\n');
 	return 0;
 }

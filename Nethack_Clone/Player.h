@@ -16,11 +16,15 @@ public:
 	virtual void move(Floor* fl, char dir);
 	bool canMove(int row, int col, Floor* fl);	//Helper function to check if a tile can be moved into (no monster and passable)
 	virtual void attack(Character & target);
+	virtual void regen();
+	virtual void levelUp();
+	virtual void use(Floor * fl);
 
 	virtual int getExperience();
 	virtual void setExperience(int iExperience);
 	virtual int getLevel();
 	virtual void setLevel(int iLevel);
+	virtual int getScore();
 
 	virtual void dumpObject();
 	virtual void dumpObjectData();
@@ -31,6 +35,8 @@ public:
 private:
 	int m_iExperience;
 	int m_iLevel;
+	int regenCount;
+	int score;
 	
 	//Have a inventory of item objects, then can equip a weapon and armor (still located in inventory)
 	Weapon* weapon;

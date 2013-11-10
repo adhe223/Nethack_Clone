@@ -17,7 +17,7 @@ public:
 	virtual void writeDataAsFragment(ostream & output);
 	virtual void setElementData(std::string sElementName, std::string sValue);
 
-	virtual void use(Character & user);
+	virtual void use(Character * user);
 
 private:
 	int m_iQuantity;

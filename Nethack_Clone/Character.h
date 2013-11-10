@@ -12,7 +12,9 @@ public:
 	virtual void attack(Character & target);
 
 	virtual int getHealth();
+	virtual int getMaxHealth();
 	virtual void setHealth(int iHealth);
+	virtual void setMaxHealth(int iMaxHP);
 	virtual int getRow() const;
 	virtual void setRow(int row);
 	virtual int getCol() const;
@@ -27,6 +29,7 @@ public:
 	
 private:
 	int m_iHealth;
+	int iMaxHealth;
 	int iRow;
 	int iCol;
 };

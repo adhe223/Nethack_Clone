@@ -6,6 +6,7 @@
 Character::Character()
 {
 	m_iHealth = 10;
+	iMaxHealth = 10;
 }
 
 void Character::attack(Character & target)
@@ -17,12 +18,20 @@ int Character::getHealth()
 	return m_iHealth;
 }
 
+int Character::getMaxHealth()
+{
+	return iMaxHealth;
+}
+
+void Character::setMaxHealth(int iMaxHP)
+{
+	iMaxHealth = iMaxHP;
+}
+
 void Character::setHealth(int iHealth)
 {
 	m_iHealth = iHealth;
 }
-
-
 
 int Character::getRow() const
 {

@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Consumable.h"
 #include <string>
 
 using namespace std;
@@ -7,6 +8,8 @@ Player::Player()
 {
 	m_iExperience = 0;
 	m_iLevel = 1;
+	regenCount = 0;
+	score = 0;
 }
 
 bool Player::canMove(int row, int col, Floor* fl)
@@ -73,7 +76,49 @@ void Player::move(Floor* fl, char dir)
 
 void Player::attack(Character & target)
 {
-	target.setHealth(target.getHealth() - weapon->getAttackBonus());
+	if (weapon != NULL)
+	{
+		target.setHealth(target.getHealth() - weapon->getAttackBonus());
+	}
+	else
+	{
+		target.setHealth(target.getHealth() - 1);
+	}
+}
+
+//Regenerate 1 HP every 4 turns
+void Player::regen()
+{
+	regenCount++;
+	if (regenCount % 4 == 0)
+	{
+		setHealth(getHealth() + 1);
+		regenCount = 0;
+	}
+}
+
+//Sets level after every turn. Level up after every 10 exp points. Also sets the players max health based
+//on the level
+void Player::levelUp()
+{
+	setLevel(getExperience() / 10);
+	setMaxHealth(10 + 3 * (getLevel() - 1));
+}
+
+void Player::use(Floor * fl)
+{
+	//Fetch the vector of items that is currently on the ground and attempt to use all of them
+	vector<Item *> items = fl->getMap()[getRow()][getCol()]->getContent();
+
+	for (int i = 0; i < items.size(); i++)
+	{
+		//Is consumable
+		Consumable * cons = dynamic_cast<Consumable *>(items[i]);
+		if (cons != NULL)
+		{
+			cons->use(static_cast<Character*>(this));
+		}
+	}
 }
 
 int Player::getExperience()
@@ -96,7 +141,10 @@ void Player::setLevel(int iLevel)
 	m_iLevel = iLevel;
 }
 
-
+int Player::getScore()
+{
+	return 4 * getExperience();
+}
 
 void Player::dumpObject()
 {

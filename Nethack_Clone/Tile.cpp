@@ -45,7 +45,7 @@ int Tile::getCol() const
 	return iCol;
 }
 
-vector<Entity*> Tile::getContent() const
+vector<Item*> Tile::getContent() const
 {
 	return vContents;
 }

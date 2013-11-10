@@ -18,7 +18,7 @@ void Consumable::setQuantity(int iQuantity)
 	m_iQuantity = iQuantity;
 }
 
-void Consumable::use(Character & user)
+void Consumable::use(Character * user)
 {
 }
 

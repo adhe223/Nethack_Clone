@@ -2,6 +2,7 @@
 #define _Tile_included_
 
 #include "Character.h"
+#include "Item.h"
 #include <ostream>
 #include <vector>
 
@@ -17,7 +18,7 @@ public:
 	
 	int getRow() const;
 	int getCol() const;
-	vector<Entity*> getContent() const;
+	vector<Item*> getContent() const;
 	char getSymbol() const;
 	void setSymbol(char symbol);
 	bool isPassable() const;
@@ -31,7 +32,7 @@ private:
 	int iRow;
 	int iCol;
 	Character* character;
-	vector<Entity*> vContents;
+	vector<Item *> vContents;
 };
 
 #endif
