@@ -57,6 +57,12 @@
     <ClCompile Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\CreatureFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\Item.h">
@@ -96,6 +102,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\Floor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\CreatureFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

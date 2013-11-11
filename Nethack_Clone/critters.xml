@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Creatures>
+  <Creature>
+    <name>orc</name>
+    <health>15</health>
+    <symbol>o</symbol>
+    <hostile>true</hostile>
+  </Creature>
+  <Creature>
+    <name>goblin</name>
+    <health>8</health>
+    <symbol>g</symbol>
+    <hostile>true</hostile>
+  </Creature>
+  <Creature>
+    <name>goblin shaman</name>
+    <health>12</health>
+    <symbol>g</symbol>
+    <hostile>true</hostile>
+  </Creature>
+  <Creature>
+    <name>orc shaman</name>
+    <health>20</health>
+    <symbol>o</symbol>
+    <hostile>true</hostile>
+  </Creature>
+  <Creature>
+    <name>kobold</name>
+    <health>8</health>
+    <symbol>k</symbol>
+    <hostile>true</hostile>
+  </Creature>
+  <Creature>
+    <name>kobold</name>
+    <health>8</health>
+    <symbol>k</symbol>
+    <hostile>true</hostile>
+  </Creature>
+  <Creature>
+    <name>kobold shaman</name>
+    <health>12</health>
+    <symbol>k</symbol>
+    <hostile>true</hostile>
+  </Creature>
+  <Creature>
+    <name>ogre</name>
+    <health>35</health>
+    <symbol>O</symbol>
+    <hostile>true</hostile>
+  </Creature>
+  <Creature>
+    <name>wolf</name>
+    <health>10</health>
+    <symbol>q</symbol>
+    <hostile>false</hostile>
+  </Creature>
+  <Creature>
+    <name>warg</name>
+    <health>25</health>
+    <symbol>q</symbol>
+    <hostile>true</hostile>
+  </Creature>
+  <Creature>
+    <name>red dragon</name>
+    <health>100</health>
+    <symbol>D</symbol>
+    <hostile>true</hostile>
+  </Creature>
+  <Creature>
+    <name>dwarf</name>
+    <health>15</health>
+    <symbol>h</symbol>
+    <hostile>false</hostile>
+  </Creature>
+</Creatures>

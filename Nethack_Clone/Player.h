@@ -14,8 +14,7 @@ public:
 	Player();
 
 	virtual void move(Floor* fl, char dir);
-	bool canMove(int row, int col, Floor* fl);	//Helper function to check if a tile can be moved into (no monster and passable)
-	virtual void attack(Character & target);
+	virtual void attack(Character * target);
 	virtual void regen();
 	virtual void levelUp();
 	virtual void use(Floor * fl);
@@ -33,6 +32,7 @@ public:
 	virtual void setElementData(std::string sElementName, std::string sValue);
 	
 private:
+	bool canMove(int row, int col, Floor* fl);	//Helper function to check if a tile can be moved into (no monster and passable)
 	int m_iExperience;
 	int m_iLevel;
 	int regenCount;

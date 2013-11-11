@@ -4,13 +4,15 @@
 #include <vector>
 #include "Floor.h"
 #include "Player.h"
+#include "Creature.h"
 
 class DungeonLevel
 {
 public:
 	DungeonLevel(int numFloors);		//Constructs map
 
-	void placePlayer(Player * pl);
+	void placePlayer(Player * pl);	//Places character for beginning of each floor
+	void placeCreature(Creature * cr);	//Places a creature randomly into the dungeon
 	void printDungeon(std::ostream & output);
 	static int randomNumber(int iMax);
 

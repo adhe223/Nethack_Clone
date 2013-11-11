@@ -3,10 +3,81 @@
 
 using namespace std;
 
+//Bad code reuse, this is in Creature and Player. Fix if time permits
+bool Creature::canMove(int row, int col, Floor* fl)
+{
+	if (row < 0 || row >= fl->getHeight() || col < 0 || col >= fl->getWidth())
+	{
+		return false;
+	}
+
+	//Check to see if there is a creature
+	if (fl->getTile(row, col)->getCharacter() != NULL) {return false;}
+
+	char symbol = fl->getTile(row, col)->getSymbol();
+	if (symbol == ' ') {return false;}
+	return true;
+}
+
+//Move towards player
+void Creature::move(Floor * fl, int iPlayerRow, int iPlayerCol)
+{
+	bool moveRow = false;
+	bool moveCol = false;
+	bool valid;
+	int newRow;
+	int newCol;
+
+	int iRow = getRow();
+	int iCol = getCol();
+	if (iPlayerRow < iRow)
+	{
+		newRow = iRow - 1;
+		newCol = iCol;
+		valid = canMove(newRow, newCol, fl);
+		if (valid) {moveRow = true;}
+	}
+	else if (iPlayerRow > iRow)
+	{
+		newRow = iRow + 1;
+		newCol = iCol;
+		valid = canMove(newRow, newCol, fl);
+		if (valid) {moveRow = true;}
+	}
+
+	if (iPlayerCol < iCol && moveRow == false)
+	{
+		newRow = iRow;
+		newCol = iCol - 1;
+		valid = canMove(newRow, newCol, fl);
+		if (valid) {moveCol = true;}
+	}
+	else if (iPlayerCol > iCol && moveRow == false)
+	{
+		newRow = iRow;
+		newCol = iCol + 1;
+		valid = canMove(newRow, newCol, fl);
+		if (valid) {moveCol = true;}
+	}
+
+	//Move
+	if (valid)
+	{
+		//Change the map of the dungeon floor
+		vector<std::vector<Tile *>> levelMap = fl->getMap();
+		levelMap[iRow][iCol]->clearCharacter();
+
+		setRow(newRow);
+		setCol(newCol);
+		levelMap[newRow][newCol]->setCharacter(this);
+	}
+}
+
 Creature::Creature()
 {
 	// Such a hostile world...
 	m_bHostile = true;
+	iRegenRate = 0;
 }
 
 bool Creature::isHostile()

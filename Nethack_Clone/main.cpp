@@ -15,6 +15,8 @@
 #include "Tile.h"
 #include "Floor.h"
 #include "XMLSerializable.h"
+#include "parser.h"
+#include "CreatureFactory.h"
 
 #include <map>
 #include <vector>
@@ -22,7 +24,7 @@
 
 using namespace std;
 
-
+/* Moved to parser.cpp
 //input file, prefix is spacing organizer, map of constructors, vector of objects we have
 void parseElement(istream & input, string sPrefix,
 		map<string, function<XMLSerializable*()>> & mConstructors, vector<XMLSerializable*> & vObjects,
@@ -44,7 +46,7 @@ void parseElement(istream & input, string sPrefix,
 		
 		/*Now that we have the name of the tag, we try to construct a class. We will attempt
 		to find the name in our dictionary of constructors and if it is found we will create
-		it.*/
+		it.
 		//We must pass the object into the recursive calls
 
 		if (pFunc != NULL)
@@ -110,7 +112,7 @@ void parseXML(string sFilename, vector<XMLSerializable*> & vObjects)
 	input.open(sFilename);
 	
 	/*Initialize the map for our constructors here, then we'll pass it to parseElement
-	by reference to save memory.*/
+	by reference to save memory.
 	map<string, function<XMLSerializable*()>> mapConstructor;
 
 	mapConstructor["Item"] = []() {return new Item;};
@@ -140,6 +142,7 @@ void parseXML(string sFilename, vector<XMLSerializable*> & vObjects)
 	
 	return;
 }
+*/
 
 void dumpObjects(vector <XMLSerializable*> vObjects) {
 	for (auto pObject : vObjects) {
@@ -170,24 +173,34 @@ int main(int argc, char * argv[])
 	cin >> sFilename;
 
 	vector<XMLSerializable*> vObjects;
-	parseXML(sFilename, vObjects);*/
+	parseXML(sFilename, vObjects);
 
 	//dumpObjects(vObjects);
 
-	//cout << "Input a filename to output the data to (inlcude .xml): ";
-	//string outputFile;
-	//cin >> outputFile;
-	//ofstream output;
-	//output.open(outputFile);
+	cout << "Input a filename to output the data to (inlcude .xml): ";
+	string outputFile;
+	cin >> outputFile;
+	ofstream output;
+	output.open(outputFile);
 
-	//outputXML(vObjects, output);
-	
+	outputXML(vObjects, output);
+	*/
+
 	DungeonLevel * dl = new DungeonLevel(50);
+	CreatureFactory & cf = CreatureFactory::instance();
 	Player * pl = new Player();
 	bool quit = false;
 
 	//Place player in dungeon
 	dl->placePlayer(pl);
+
+	//Create and place an initial creature, use vector to store creatures
+	vector<Creature *> vCreatures;
+	vCreatures.push_back(cf.generateCreature(10));
+	if (vCreatures[0] != NULL)
+	{
+		dl->placeCreature(vCreatures[0]);
+	}
 
 	//Main driving logic
 	while (!quit)
@@ -204,6 +217,27 @@ int main(int argc, char * argv[])
 			pl->move(dl->getFloor(dl->getCurrentFloor()), input);
 		}
 
+		//Move mosters
+		for (int i = 0; i < vCreatures.size(); i++)
+		{
+			vCreatures[i]->move(dl->getFloor(dl->getCurrentFloor()), pl->getRow(), pl->getCol());
+		}
+
+		//Delete dead monsters
+		int size = vCreatures.size();
+		for (int i = 0; i < size; i++)
+		{
+			if (vCreatures[i]->getHealth() <= 0)
+			{
+				//remove from the map and delete the create. Only one will die each turn so we can return
+				//after handling the death of a creature
+				Creature * toDelete = vCreatures[i];
+				vCreatures.erase(vCreatures.begin() + i);	//Remove from creature vector
+				dl->getFloor(dl->getCurrentFloor())->getTile(toDelete->getRow(), toDelete->getCol())->clearCharacter();	//Clear tile
+				delete toDelete;	//delete object
+				size = size - 1;
+			}
+		}
 
 		pl->regen();
 		pl->levelUp();

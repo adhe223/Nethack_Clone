@@ -22,7 +22,7 @@ DungeonLevel::DungeonLevel(int numFloors)
 
 void DungeonLevel::placePlayer(Player * pl)
 {
-	Floor* fl = getFloor(0);
+	Floor* fl = getFloor(currFloor);
 	vector<vector<Tile *>> map = fl->getMap();
 	
 	for (int row = 0; row < fl->getHeight(); row++)
@@ -34,6 +34,34 @@ void DungeonLevel::placePlayer(Player * pl)
 				map[row][col]->setCharacter(pl);
 				pl->setRow(row);
 				pl->setCol(col);
+			}
+		}
+	}
+}
+
+void DungeonLevel::placeCreature(Creature * cr)
+{
+	Floor* fl = getFloor(currFloor);
+	vector<vector<Tile *>> map = fl->getMap();
+
+	bool placed = false;
+	while (!placed)
+	{
+		int iRandRow = randomNumber(iHeight);
+		int iRandCol = randomNumber(iWidth);
+
+		//Check if creature or player is already there
+		Tile * tl = map[iRandRow][iRandCol];
+		if (tl->getCharacter() == NULL)
+		{
+			//Empty room tile (may have item, but that's fine
+			if (tl->getSymbol() == '.')
+			{
+				//Place the creature
+				tl->setCharacter(cr);
+				cr->setRow(iRandRow);
+				cr->setCol(iRandCol);
+				placed = true;
 			}
 		}
 	}

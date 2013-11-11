@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Consumable.h"
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -10,6 +11,7 @@ Player::Player()
 	m_iLevel = 1;
 	regenCount = 0;
 	score = 0;
+	weapon = new Weapon("Bare Hands", 1, 0);
 }
 
 bool Player::canMove(int row, int col, Floor* fl)
@@ -20,13 +22,20 @@ bool Player::canMove(int row, int col, Floor* fl)
 		return false;
 	}
 
-	//Check to see if there is a creature
-	if (fl->getTile(row, col)->getCharacter() != NULL) {return false;}
+	//Check to see if there is a character
+	Character * ch = fl->getTile(row, col)->getCharacter();
+	if (ch != NULL)
+	{
+		attack(ch);
+		return false;
+	}
 
 	char symbol = fl->getTile(row, col)->getSymbol();
-	if (symbol != ' ') {return true;}
+	if (symbol == ' ') {return false;}
+	return true;
 }
 
+//If the desired tile to move to has another character then we attack (called in the canMove function)
 void Player::move(Floor* fl, char dir)
 {
 	//Check if valid position
@@ -74,15 +83,18 @@ void Player::move(Floor* fl, char dir)
 	}
 }
 
-void Player::attack(Character & target)
+void Player::attack(Character * target)
 {
-	if (weapon != NULL)
+	target->setHealth(target->getHealth() - 1);
+	cout << "Attacked a " << target->getName() << " with your " << weapon->getName() << "!" << endl;
+
+	if (target->getHealth() > 0)
 	{
-		target.setHealth(target.getHealth() - weapon->getAttackBonus());
+		cout << "The " << target->getName() << " has " << target->getHealth() << "HP left." << endl;
 	}
 	else
 	{
-		target.setHealth(target.getHealth() - 1);
+		cout << "The " << target->getName() << " has been killed!" << endl;
 	}
 }
 

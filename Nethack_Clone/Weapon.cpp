@@ -6,6 +6,13 @@ Weapon::Weapon()
 	m_iWeaponType = 0;
 }
 
+Weapon::Weapon(string name, int attackBonus, int weaponType)
+{
+	setName(name);
+	setAttackBonus(attackBonus);
+	setWeaponType(weaponType);
+}
+
 int Weapon::getAttackBonus()
 {
 	return m_iAttackBonus;
