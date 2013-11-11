@@ -190,6 +190,7 @@ int main(int argc, char * argv[])
 	CreatureFactory & cf = CreatureFactory::instance();
 	Player * pl = new Player();
 	bool quit = false;
+	int creatureGenCount = 1;
 
 	//Place player in dungeon
 	dl->placePlayer(pl);
@@ -239,8 +240,22 @@ int main(int argc, char * argv[])
 			}
 		}
 
+		//Add more creatures every 10th turn
+		if (creatureGenCount % 10 == 0)
+		{
+			creatureGenCount = 0;
+			int levelReq = 10;
+			if (dl->getCurrentFloor() > 5)
+			{
+				levelReq = dl->getCurrentFloor() * 2;
+			}
+			vCreatures.push_back(cf.generateCreature(levelReq));
+			dl->placeCreature(vCreatures.back());
+		}
+
 		pl->regen();
 		pl->levelUp();
+		creatureGenCount++;
 		cout << endl;
 	}
 	

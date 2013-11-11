@@ -22,7 +22,6 @@ public:
 private:
 	bool canMove(int row, int col, Floor* fl);	//Helper function to check if a tile can be moved into (no monster and passable)
 	bool m_bHostile;
-	int iRegenRate;
 };
 
 #endif

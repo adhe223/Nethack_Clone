@@ -9,7 +9,7 @@ Player::Player()
 {
 	m_iExperience = 0;
 	m_iLevel = 1;
-	regenCount = 0;
+	regenCount = 1;
 	score = 0;
 	weapon = new Weapon("Bare Hands", 1, 0);
 }
@@ -102,7 +102,7 @@ void Player::attack(Character * target)
 void Player::regen()
 {
 	regenCount++;
-	if (regenCount % 4 == 0)
+	if (regenCount % 4 == 0 && getHealth() != getMaxHealth())
 	{
 		setHealth(getHealth() + 1);
 		regenCount = 0;

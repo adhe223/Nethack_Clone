@@ -77,7 +77,6 @@ Creature::Creature()
 {
 	// Such a hostile world...
 	m_bHostile = true;
-	iRegenRate = 0;
 }
 
 bool Creature::isHostile()
