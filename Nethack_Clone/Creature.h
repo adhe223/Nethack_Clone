@@ -3,12 +3,14 @@
 
 #include "Character.h"
 #include "Floor.h"
+#include "Player.h"
 
 class Creature : public Character
 {
 public:
-	virtual void attack(Character & target);
-	virtual void move(Floor * fl, int iPlayerRow, int iPlayerCol);
+	virtual void attack(Character * target);
+	virtual void move(Floor * fl, Player * pl);
+	virtual void giveExp(Player * pl);
 
 	Creature();
 	virtual bool isHostile();

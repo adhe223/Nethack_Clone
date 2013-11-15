@@ -20,7 +20,7 @@ bool Creature::canMove(int row, int col, Floor* fl)
 }
 
 //Move towards player
-void Creature::move(Floor * fl, int iPlayerRow, int iPlayerCol)
+void Creature::move(Floor * fl, Player * pl)
 {
 	bool moveRow = false;
 	bool moveCol = false;
@@ -30,6 +30,15 @@ void Creature::move(Floor * fl, int iPlayerRow, int iPlayerCol)
 
 	int iRow = getRow();
 	int iCol = getCol();
+	int iPlayerRow = pl->getRow();
+	int iPlayerCol = pl->getCol();
+
+	//If player is in an adjacent tile then the creature attacks, can attack diagonal
+	if (abs(iRow - iPlayerRow) <= 1 && abs(iCol - iPlayerCol) <= 1)
+	{
+		attack(pl);
+	}
+
 	if (iPlayerRow < iRow)
 	{
 		newRow = iRow - 1;
@@ -73,6 +82,12 @@ void Creature::move(Floor * fl, int iPlayerRow, int iPlayerCol)
 	}
 }
 
+void Creature::giveExp(Player * pl)
+{
+	pl->setExperience(pl->getExperience() + getMaxHealth()/2);
+	cout << "The " << getName() << " gives you " << getMaxHealth()/2 << " exp!" << endl;
+}
+
 Creature::Creature()
 {
 	// Such a hostile world...
@@ -89,8 +104,21 @@ void Creature::setHostile(bool bHostile)
 	m_bHostile = bHostile;
 }
 
-void Creature::attack(Character & target)
+void Creature::attack(Character * target)
 {
+	//Attack does damage based on the maxHealth of the creature
+	cout << "The " << getName() << " attacks and does " << getMaxHealth()/8 << " damage!" << endl;
+	int remHP = target->getHealth() - (getMaxHealth()/8);
+	if (remHP <= 0)
+	{
+		cout << "The vitality drains from your body, GAME OVER." << endl;
+		target->setHealth(0);
+	}
+	else
+	{
+		cout << "You have " << remHP << " HP remaining!" << endl;
+		target->setHealth(remHP);
+	}
 }
 
 void Creature::dumpObject()

@@ -18,7 +18,9 @@ public:
 	
 	int getRow() const;
 	int getCol() const;
-	vector<Item*> getContent() const;
+	vector<Item*> getItems() const;
+	void addItem(Item * item);
+	void removeItem();
 	char getSymbol() const;
 	void setSymbol(char symbol);
 	bool isPassable() const;
@@ -32,7 +34,7 @@ private:
 	int iRow;
 	int iCol;
 	Character* character;
-	vector<Item *> vContents;
+	vector<Item *> vItems;
 };
 
 #endif

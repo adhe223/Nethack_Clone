@@ -13,6 +13,7 @@ public:
 
 	void placePlayer(Player * pl);	//Places character for beginning of each floor
 	void placeCreature(Creature * cr);	//Places a creature randomly into the dungeon
+	void placeItem(Item * it);	//Place item in dungeon
 	void printDungeon(std::ostream & output);
 	static int randomNumber(int iMax);
 

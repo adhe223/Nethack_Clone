@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Consumable.h"
+#include "Creature.h"
 #include <string>
 #include <iostream>
 
@@ -8,7 +9,7 @@ using namespace std;
 Player::Player()
 {
 	m_iExperience = 0;
-	m_iLevel = 1;
+	m_iLevel = 0;
 	regenCount = 1;
 	score = 0;
 	weapon = new Weapon("Bare Hands", 1, 0);
@@ -45,25 +46,25 @@ void Player::move(Floor* fl, char dir)
 
 	int iRow = getRow();
 	int iCol = getCol();
-	if (dir == '8')
+	if (dir == 'w')
 	{
 		newRow = iRow - 1;
 		newCol = iCol;
 		valid = canMove(newRow, newCol, fl);
 	}
-	else if (dir == '4') 
+	else if (dir == 'a') 
 	{
 		newRow = iRow;
 		newCol = iCol - 1;
 		valid = canMove(newRow, newCol, fl);
 	}
-	else if (dir == '2')
+	else if (dir == 's')
 	{
 		newRow = iRow + 1;
 		newCol = iCol;
 		valid = canMove(newRow, newCol, fl);
 	}
-	else if (dir == '6')
+	else if (dir == 'd')
 	{
 		newRow = iRow;
 		newCol = iCol + 1;
@@ -95,6 +96,11 @@ void Player::attack(Character * target)
 	else
 	{
 		cout << "The " << target->getName() << " has been killed!" << endl;
+		Creature * cr = dynamic_cast<Creature *>(target);
+		if (cr != NULL)
+		{
+			cr->giveExp(this);
+		}
 	}
 }
 
@@ -113,14 +119,22 @@ void Player::regen()
 //on the level
 void Player::levelUp()
 {
-	setLevel(getExperience() / 10);
-	setMaxHealth(10 + 3 * (getLevel() - 1));
+	int currLevel = getLevel();
+	int newLevel = getExperience() / 10;
+
+	if (newLevel == currLevel) {}	//Do nothing
+	else
+	{
+		cout << "You have leveled up! You are now level " << newLevel << "!" << endl;
+		setLevel(newLevel);
+		setMaxHealth(10 + 3 * (getLevel() - 1));
+	}
 }
 
 void Player::use(Floor * fl)
 {
 	//Fetch the vector of items that is currently on the ground and attempt to use all of them
-	vector<Item *> items = fl->getMap()[getRow()][getCol()]->getContent();
+	vector<Item *> items = fl->getMap()[getRow()][getCol()]->getItems();
 
 	for (int i = 0; i < items.size(); i++)
 	{
@@ -129,6 +143,7 @@ void Player::use(Floor * fl)
 		if (cons != NULL)
 		{
 			cons->use(static_cast<Character*>(this));
+			fl->getMap()[getRow()][getCol()]->removeItem();
 		}
 	}
 }

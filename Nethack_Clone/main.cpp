@@ -17,6 +17,7 @@
 #include "XMLSerializable.h"
 #include "parser.h"
 #include "CreatureFactory.h"
+#include "ItemFactory.h"
 
 #include <map>
 #include <vector>
@@ -185,9 +186,10 @@ int main(int argc, char * argv[])
 
 	outputXML(vObjects, output);
 	*/
-
+	bool newFloor = true;
 	DungeonLevel * dl = new DungeonLevel(50);
 	CreatureFactory & cf = CreatureFactory::instance();
+	ItemFactory & itemFact = ItemFactory::instance();
 	Player * pl = new Player();
 	bool quit = false;
 	int creatureGenCount = 1;
@@ -195,17 +197,32 @@ int main(int argc, char * argv[])
 	//Place player in dungeon
 	dl->placePlayer(pl);
 
-	//Create and place an initial creature, use vector to store creatures
-	vector<Creature *> vCreatures;
-	vCreatures.push_back(cf.generateCreature(10));
-	if (vCreatures[0] != NULL)
-	{
-		dl->placeCreature(vCreatures[0]);
-	}
-
 	//Main driving logic
 	while (!quit)
 	{
+		vector<Item *> vItems;
+		vector<Creature *> vCreatures;
+		if (newFloor)
+		{
+			//Create and place a number between 0 and 10 items for the dungeon and put into vector
+			int iNumItems = CreatureFactory::randomValue(11);
+			for (int i = 0; i < iNumItems; i++)
+			{
+				vItems.push_back(itemFact.generateItem());
+				dl->placeItem(vItems.back());
+			}
+
+			//Create and place an initial creature, use vector to store creatures
+			vCreatures.push_back(cf.generateCreature(10));
+			if (vCreatures[0] != NULL)
+			{
+				dl->placeCreature(vCreatures[0]);
+			}
+
+			newFloor = false;
+		}
+	
+
 		dl->getFloor(dl->getCurrentFloor())->printFloor(cout);
 		
 		//Allow the player to enter input
@@ -213,7 +230,7 @@ int main(int argc, char * argv[])
 		cout << endl << "Please enter the action you want to perform: ";
 		cin >> input;
 		
-		if (input == '8' || input == '4' || input == '2' || input == '6')
+		if (input == 'w' || input == 'a' || input == 's' || input == 'd')
 		{
 			pl->move(dl->getFloor(dl->getCurrentFloor()), input);
 		}
@@ -221,7 +238,7 @@ int main(int argc, char * argv[])
 		//Move mosters
 		for (int i = 0; i < vCreatures.size(); i++)
 		{
-			vCreatures[i]->move(dl->getFloor(dl->getCurrentFloor()), pl->getRow(), pl->getCol());
+			vCreatures[i]->move(dl->getFloor(dl->getCurrentFloor()), pl);
 		}
 
 		//Delete dead monsters
@@ -253,7 +270,8 @@ int main(int argc, char * argv[])
 			dl->placeCreature(vCreatures.back());
 		}
 
-		pl->regen();
+		if (pl->getHealth() <= 0) {quit = true;}
+		if (pl->getHealth() != pl->getMaxHealth()) {pl->regen();}
 		pl->levelUp();
 		creatureGenCount++;
 		cout << endl;

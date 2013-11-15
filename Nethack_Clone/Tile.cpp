@@ -45,9 +45,21 @@ int Tile::getCol() const
 	return iCol;
 }
 
-vector<Item*> Tile::getContent() const
+vector<Item*> Tile::getItems() const
 {
-	return vContents;
+	return vItems;
+}
+
+void Tile::addItem(Item * item)
+{
+	vItems.push_back(item);
+}
+
+void Tile::removeItem()
+{
+	Item * toDelete = vItems.back();
+	vItems.pop_back();
+	delete toDelete;
 }
 
 char Tile::getSymbol() const
@@ -74,5 +86,6 @@ void Tile::printTile(std::ostream & output)
 {
 	//Check if there is a character
 	if (character != NULL) {output << character->getSymbol();}
+	else if (vItems.size() != 0) {output << vItems.back()->getSymbol();}
 	else {output << getSymbol();}
 }

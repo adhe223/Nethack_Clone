@@ -5,6 +5,7 @@
 #include "DungeonLevel.h"
 #include "Tile.h"
 #include "Player.h"
+#include "Item.h"
 using namespace std;
 
 DungeonLevel::DungeonLevel(int numFloors)
@@ -61,6 +62,32 @@ void DungeonLevel::placeCreature(Creature * cr)
 				tl->setCharacter(cr);
 				cr->setRow(iRandRow);
 				cr->setCol(iRandCol);
+				placed = true;
+			}
+		}
+	}
+}
+
+void DungeonLevel::placeItem(Item * it)
+{
+	Floor* fl = getFloor(currFloor);
+	vector<vector<Tile *>> map = fl->getMap();
+
+	bool placed = false;
+	while (!placed)
+	{
+		int iRandRow = randomNumber(iHeight);
+		int iRandCol = randomNumber(iWidth);
+
+		//Check if creature or player is already there
+		Tile * tl = map[iRandRow][iRandCol];
+		if (tl->getCharacter() == NULL)
+		{
+			//Empty room tile (may have item, but that's fine
+			if (tl->getSymbol() == '.')
+			{
+				//Place the creature
+				tl->addItem(it);
 				placed = true;
 			}
 		}
