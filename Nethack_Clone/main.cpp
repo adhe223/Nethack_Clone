@@ -187,42 +187,47 @@ int main(int argc, char * argv[])
 	outputXML(vObjects, output);
 	*/
 	bool newFloor = true;
-	DungeonLevel * dl = new DungeonLevel(50);
+	DungeonLevel * dl = new DungeonLevel(5);
 	CreatureFactory & cf = CreatureFactory::instance();
 	ItemFactory & itemFact = ItemFactory::instance();
 	Player * pl = new Player();
 	bool quit = false;
 	int creatureGenCount = 1;
 
-	//Place player in dungeon
-	dl->placePlayer(pl);
+	vector<Creature *> vCreatures;
 
 	//Main driving logic
 	while (!quit)
 	{
-		vector<Item *> vItems;
-		vector<Creature *> vCreatures;
 		if (newFloor)
 		{
+			//Place player in dungeon
+			dl->placePlayer(pl);
+
+			vCreatures = dl->getFloor(dl->getCurrentFloor())->getCreatures();
+
 			//Create and place a number between 0 and 10 items for the dungeon and put into vector
-			int iNumItems = CreatureFactory::randomValue(11);
+			int iNumItems = ItemFactory::randomValue(11);
 			for (int i = 0; i < iNumItems; i++)
 			{
-				vItems.push_back(itemFact.generateItem());
-				dl->placeItem(vItems.back());
+				dl->placeItem(itemFact.generateItem());
 			}
 
-			//Create and place an initial creature, use vector to store creatures
-			vCreatures.push_back(cf.generateCreature(10));
-			if (vCreatures[0] != NULL)
+			//Place an initial creature
+			int levelReq = 10;
+			if (dl->getCurrentFloor() > 5)
 			{
-				dl->placeCreature(vCreatures[0]);
+				levelReq = dl->getCurrentFloor() * 2;
 			}
+
+			vCreatures.push_back(cf.generateCreature(levelReq));
+			dl->placeCreature(vCreatures.back());
 
 			newFloor = false;
+			creatureGenCount = 1;
 		}
 	
-
+		cout << "Floor: " << dl->getCurrentFloor() << endl;
 		dl->getFloor(dl->getCurrentFloor())->printFloor(cout);
 		
 		//Allow the player to enter input
@@ -257,10 +262,10 @@ int main(int argc, char * argv[])
 			}
 		}
 
-		//Add more creatures every 10th turn
-		if (creatureGenCount % 10 == 0)
+		//Add more creatures every nth turn
+		if (creatureGenCount % 17 == 0)
 		{
-			creatureGenCount = 0;
+			creatureGenCount = 1;
 			int levelReq = 10;
 			if (dl->getCurrentFloor() > 5)
 			{
@@ -274,9 +279,33 @@ int main(int argc, char * argv[])
 		if (pl->getHealth() != pl->getMaxHealth()) {pl->regen();}
 		pl->levelUp();
 		creatureGenCount++;
+
+		//Check if player moved onto stairwell and needs to go to different floor
+		char cOn = dl->getFloor(dl->getCurrentFloor())->getTile(pl->getRow(), pl->getCol())->getSymbol();
+		if (cOn == '>')
+		{
+			//Check if leaving the dungeon
+			if (dl->getCurrentFloor() == 0) {quit = true;}
+			else 
+			{
+				dl->getFloor(dl->getCurrentFloor())->getTile(pl->getRow(), pl->getCol())->clearCharacter();
+				dl->setCurrentFloor(dl->getCurrentFloor() - 1);
+			}
+			
+			newFloor = true;
+		}
+		else if (cOn == '<')
+		{
+			dl->getFloor(dl->getCurrentFloor())->getTile(pl->getRow(), pl->getCol())->clearCharacter();
+			dl->setCurrentFloor(dl->getCurrentFloor() + 1);
+			newFloor = true;
+		}
+
 		cout << endl;
 	}
-	
+	cout << endl << "You have escaped the dungeon with a final score of " << pl->getExperience() * 2 << "!" << endl;
+
+	cin.ignore(200, '\n');
 	cin.ignore(200, '\n');
 	return 0;
 }

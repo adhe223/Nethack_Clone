@@ -29,6 +29,8 @@ Floor::Floor(int floor, int numFloors, int floorWidth, int floorHeight)
 	drawTunnel();
 	drawRooms();
 	drawStairs();
+
+	vCreatures;
 }
 
 Tile* Floor::getTile(int row, int col)
@@ -59,6 +61,11 @@ int Floor::getWidth() const
 int Floor::getHeight() const
 {
 	return iHeight;
+}
+
+vector<Creature *> & Floor::getCreatures()
+{
+	return vCreatures;
 }
 	
 void Floor::printFloor(ostream & output)

@@ -108,7 +108,7 @@ void Player::attack(Character * target)
 void Player::regen()
 {
 	regenCount++;
-	if (regenCount % 4 == 0 && getHealth() != getMaxHealth())
+	if (regenCount % 2 == 0 && getHealth() != getMaxHealth())
 	{
 		setHealth(getHealth() + 1);
 		regenCount = 0;

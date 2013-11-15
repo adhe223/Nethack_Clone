@@ -4,6 +4,8 @@
 #include <vector>
 #include "Tile.h"
 
+class Creature;
+
 class Floor
 {
 public:
@@ -17,6 +19,7 @@ public:
 	std::vector<std::vector<Tile *>> & getMapRef();
 	int getHeight() const;
 	int getWidth() const;
+	vector<Creature *> & getCreatures();
 
 private:
 	void drawBlank();	//Helper function that fills vector with blank spaces
@@ -39,6 +42,8 @@ private:
 	int iMinRoomHeight; //Smallest Room height
 	int iMaxRoomWidth;	//Largest width a room can have
 	int iMaxRoomHeight;	//Largest height a room can have
+
+	vector<Creature *> vCreatures;
 };
 
 #endif

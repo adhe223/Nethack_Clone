@@ -18,6 +18,7 @@ public:
 	static int randomNumber(int iMax);
 
 	int getCurrentFloor();
+	void setCurrentFloor(int floor);
 	std::vector<Floor *> getFloors() const;
 	Floor * getFloor(int numFloor);
 

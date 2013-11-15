@@ -123,3 +123,8 @@ Floor * DungeonLevel::getFloor(int numFloor)
 {
 	return vFloors[numFloor];
 }
+
+void DungeonLevel::setCurrentFloor(int floor)
+{
+	currFloor = floor;
+}
