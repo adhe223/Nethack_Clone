@@ -65,6 +65,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\ItemFactory.cpp" />
+    <ClCompile Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\Potion.cpp" />
     <ClCompile Include="Armor.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Consumable.cpp" />
@@ -85,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\ItemFactory.h" />
+    <ClInclude Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\Potion.h" />
     <ClInclude Include="Armor.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Consumable.h" />

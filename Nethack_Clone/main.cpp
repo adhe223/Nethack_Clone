@@ -25,126 +25,6 @@
 
 using namespace std;
 
-/* Moved to parser.cpp
-//input file, prefix is spacing organizer, map of constructors, vector of objects we have
-void parseElement(istream & input, string sPrefix,
-		map<string, function<XMLSerializable*()>> & mConstructors, vector<XMLSerializable*> & vObjects,
-			XMLSerializable * pObject)
-{
-	string sElementName;
-	getline(input, sElementName, '>');
-	function<XMLSerializable*()> pFunc = mConstructors[sElementName];
-
-
-	if( sElementName.back() == '/' )
-	{
-		cout << sPrefix << "Empty element: " << sElementName << endl;
-		return;
-	}
-	else
-	{
-		//cout << sPrefix << "Element - " << sElementName << endl;
-		
-		/*Now that we have the name of the tag, we try to construct a class. We will attempt
-		to find the name in our dictionary of constructors and if it is found we will create
-		it.
-		//We must pass the object into the recursive calls
-
-		if (pFunc != NULL)
-		{
-			pObject = NULL;	//Do this to reset (so we don't have a leftover pointer
-			pObject = pFunc(); //Constructs our new vector
-		}
-	}
-
-	string sContent = "";
-
-
-	while( true )
-	{
-
-		char c = input.get();
-
-		while( c != '<' )
-		{
-			if( c != '\n' )
-				sContent.push_back(c);
-
-			c = input.get();
-		}
-
-		if( input.peek() == '/' )
-		{
-			input.get();
-			string sEndElement;
-			getline(input, sEndElement, '>');
-
-			if( sEndElement != sElementName )
-				cout << "Bad XML found" << endl;
-
-
-			//cout << sPrefix << "Content - " << sContent << endl;
-
-			if (pObject != NULL)
-			{
-				pObject->setElementData(sElementName, sContent); //Sets the data of our new object
-			}
-
-			//Make sure the objectis one of our main classes before storing in vector
-			if (pFunc != NULL)
-			{
-				vObjects.push_back(pObject);
-			}
-
-			return;
-		}
-		else
-		{
-			parseElement(input, sPrefix + "  ", mConstructors, vObjects, pObject);
-		}
-
-	}
-
-}
-
-void parseXML(string sFilename, vector<XMLSerializable*> & vObjects)
-{
-	ifstream input;
-	input.open(sFilename);
-	
-	/*Initialize the map for our constructors here, then we'll pass it to parseElement
-	by reference to save memory.
-	map<string, function<XMLSerializable*()>> mapConstructor;
-
-	mapConstructor["Item"] = []() {return new Item;};
-	mapConstructor["Creature"] = []() {return new Creature;};
-	mapConstructor["Armor"] = []() {return new Armor;};
-	mapConstructor["Weapon"] = []() {return new Weapon;};
-	mapConstructor["Entity"] = []() {return new Entity;};
-	mapConstructor["Character"] = []() {return new Character;};
-	mapConstructor["Consumable"] = []() {return new Consumable;};
-	mapConstructor["Equipment"] = []() {return new Equipment;};
-	mapConstructor["Character"] = []() {return new Character;};
-	mapConstructor["Player"] = []() {return new Player;};
-
-	while( input.get() != '?' );
-	while( input.get() != '?' );
-	
-	if( input.get() != '>' )
-	{
-		cout << "Bad XML detected" << endl;
-		return;
-	}
-
-	while( input.get() != '<' );
-
-	XMLSerializable* pNull = NULL;
-	parseElement(input, "", mapConstructor, vObjects, pNull);
-	
-	return;
-}
-*/
-
 void dumpObjects(vector <XMLSerializable*> vObjects) {
 	for (auto pObject : vObjects) {
 		pObject->dumpObject();
@@ -169,42 +49,24 @@ void outputXML(vector<XMLSerializable*> & vObjects, ostream & output)
 
 int main(int argc, char * argv[])
 {
-	/*cout << "What file should we parse? ";
-	string sFilename;
-	cin >> sFilename;
-
-	vector<XMLSerializable*> vObjects;
-	parseXML(sFilename, vObjects);
-
-	//dumpObjects(vObjects);
-
-	cout << "Input a filename to output the data to (inlcude .xml): ";
-	string outputFile;
-	cin >> outputFile;
-	ofstream output;
-	output.open(outputFile);
-
-	outputXML(vObjects, output);
-	*/
 	bool newFloor = true;
 	DungeonLevel * dl = new DungeonLevel(5);
 	CreatureFactory & cf = CreatureFactory::instance();
 	ItemFactory & itemFact = ItemFactory::instance();
 	Player * pl = new Player();
 	bool quit = false;
+	bool bDown = true;
 	int creatureGenCount = 1;
-
-	vector<Creature *> vCreatures;
 
 	//Main driving logic
 	while (!quit)
 	{
+		vector<Creature *> & vCreatures = dl->getCurrentFloorObj()->getCreatures();
+
 		if (newFloor)
 		{
 			//Place player in dungeon
-			dl->placePlayer(pl);
-
-			vCreatures = dl->getFloor(dl->getCurrentFloor())->getCreatures();
+			dl->placePlayer(pl, bDown);
 
 			//Create and place a number between 0 and 10 items for the dungeon and put into vector
 			int iNumItems = ItemFactory::randomValue(11);
@@ -213,15 +75,18 @@ int main(int argc, char * argv[])
 				dl->placeItem(itemFact.generateItem());
 			}
 
-			//Place an initial creature
-			int levelReq = 10;
-			if (dl->getCurrentFloor() > 5)
+			//Place an initial creature if none are on floor
+			if (vCreatures.size() == 0)
 			{
-				levelReq = dl->getCurrentFloor() * 2;
-			}
+				int levelReq = 10;
+				if (dl->getCurrentFloor() > 5)
+				{
+					levelReq = dl->getCurrentFloor() * 2;
+				}
 
-			vCreatures.push_back(cf.generateCreature(levelReq));
-			dl->placeCreature(vCreatures.back());
+				vCreatures.push_back(cf.generateCreature(levelReq));
+				dl->placeCreature(vCreatures.back());
+			}
 
 			newFloor = false;
 			creatureGenCount = 1;
@@ -235,9 +100,15 @@ int main(int argc, char * argv[])
 		cout << endl << "Please enter the action you want to perform: ";
 		cin >> input;
 		
+		//Control Handling
 		if (input == 'w' || input == 'a' || input == 's' || input == 'd')
 		{
 			pl->move(dl->getFloor(dl->getCurrentFloor()), input);
+		}
+
+		if (input == 'u')
+		{
+			pl->use(dl->getCurrentFloorObj());
 		}
 
 		//Move mosters
@@ -252,7 +123,7 @@ int main(int argc, char * argv[])
 		{
 			if (vCreatures[i]->getHealth() <= 0)
 			{
-				//remove from the map and delete the create. Only one will die each turn so we can return
+				//remove from the map and delete the creature. Only one will die each turn so we can return
 				//after handling the death of a creature
 				Creature * toDelete = vCreatures[i];
 				vCreatures.erase(vCreatures.begin() + i);	//Remove from creature vector
@@ -290,6 +161,7 @@ int main(int argc, char * argv[])
 			{
 				dl->getFloor(dl->getCurrentFloor())->getTile(pl->getRow(), pl->getCol())->clearCharacter();
 				dl->setCurrentFloor(dl->getCurrentFloor() - 1);
+				bDown = false;
 			}
 			
 			newFloor = true;
@@ -299,6 +171,7 @@ int main(int argc, char * argv[])
 			dl->getFloor(dl->getCurrentFloor())->getTile(pl->getRow(), pl->getCol())->clearCharacter();
 			dl->setCurrentFloor(dl->getCurrentFloor() + 1);
 			newFloor = true;
+			bDown = true;
 		}
 
 		cout << endl;

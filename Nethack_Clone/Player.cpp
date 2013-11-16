@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Consumable.h"
 #include "Creature.h"
+#include "Potion.h"
 #include <string>
 #include <iostream>
 
@@ -134,17 +135,57 @@ void Player::levelUp()
 void Player::use(Floor * fl)
 {
 	//Fetch the vector of items that is currently on the ground and attempt to use all of them
-	vector<Item *> items = fl->getMap()[getRow()][getCol()]->getItems();
+	vector<Item *> & items = fl->getMap()[getRow()][getCol()]->getItems();
 
 	for (int i = 0; i < items.size(); i++)
 	{
+		Item * pIt = items[i];
+
 		//Is consumable
-		Consumable * cons = dynamic_cast<Consumable *>(items[i]);
+		Consumable * cons = dynamic_cast<Consumable*>(pIt);
 		if (cons != NULL)
 		{
 			cons->use(static_cast<Character*>(this));
-			fl->getMap()[getRow()][getCol()]->removeItem();
+			fl->getMap()[getRow()][getCol()]->removeItem(i);
 		}
+
+		//Is Armor
+		Armor * pArm = dynamic_cast<Armor*>(pIt);
+		if (pArm != NULL)
+		{
+			equip(pArm);
+			fl->getMap()[getRow()][getCol()]->removeItem(i);
+		}
+
+		//Is Weapon
+		Weapon * pWeap = dynamic_cast<Weapon*>(pIt);
+		if (pWeap != NULL)
+		{
+			equip(pWeap);
+			fl->getMap()[getRow()][getCol()]->removeItem(i);
+		}
+
+		//Else add to inventory
+		vInventory.push_back(pIt);
+		fl->getMap()[getRow()][getCol()]->removeItem(i);
+	}
+}
+
+void Player::equip(Equipment * eq)
+{
+	Armor * pArm = dynamic_cast<Armor*>(eq);
+	if (pArm != NULL)
+	{
+		vInventory.push_back(pArm);
+		armor = pArm;
+		cout << "You have equipped a " << pArm->getName() << "!" << endl;
+	}
+	Weapon * pWeap = dynamic_cast<Weapon *>(eq);
+	if (pWeap != NULL)
+	{
+		vInventory.push_back(pWeap);
+		weapon = pWeap;
+		cout << "You have equipped a " << pWeap->getName() << "!" << endl;
 	}
 }
 
@@ -171,6 +212,26 @@ void Player::setLevel(int iLevel)
 int Player::getScore()
 {
 	return 4 * getExperience();
+}
+
+Weapon * Player::getWeapon()
+{
+	return weapon;
+}
+
+Armor * Player::getArmor()
+{
+	return armor;
+}
+
+void Player::setWeapon(Weapon * wp)
+{
+	weapon = wp;
+}
+
+void Player::setArmor(Armor * ar)
+{
+	armor = ar;
 }
 
 void Player::dumpObject()

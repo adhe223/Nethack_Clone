@@ -29,8 +29,6 @@ Floor::Floor(int floor, int numFloors, int floorWidth, int floorHeight)
 	drawTunnel();
 	drawRooms();
 	drawStairs();
-
-	vCreatures;
 }
 
 Tile* Floor::getTile(int row, int col)

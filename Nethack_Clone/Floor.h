@@ -5,6 +5,7 @@
 #include "Tile.h"
 
 class Creature;
+class Item;
 
 class Floor
 {
@@ -20,6 +21,8 @@ public:
 	int getHeight() const;
 	int getWidth() const;
 	vector<Creature *> & getCreatures();
+	void addCreature(Creature * cr);
+	void removeDeadCreatures();
 
 private:
 	void drawBlank();	//Helper function that fills vector with blank spaces
@@ -44,6 +47,7 @@ private:
 	int iMaxRoomHeight;	//Largest height a room can have
 
 	vector<Creature *> vCreatures;
+	vector<Item *> vItems;
 };
 
 #endif

@@ -69,6 +69,9 @@
     <ClCompile Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\ItemFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\Potion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Weapon.h">
@@ -117,6 +120,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\ItemFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\Potion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

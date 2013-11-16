@@ -45,7 +45,7 @@ int Tile::getCol() const
 	return iCol;
 }
 
-vector<Item*> Tile::getItems() const
+vector<Item*> & Tile::getItems()
 {
 	return vItems;
 }
@@ -55,10 +55,10 @@ void Tile::addItem(Item * item)
 	vItems.push_back(item);
 }
 
-void Tile::removeItem()
+void Tile::removeItem(int i)
 {
-	Item * toDelete = vItems.back();
-	vItems.pop_back();
+	Item * toDelete = vItems[i];
+	vItems.erase(vItems.begin() + i);
 	delete toDelete;
 }
 

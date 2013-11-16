@@ -14,6 +14,7 @@
 #include "Item.h"
 #include "Player.h"
 #include "Weapon.h"
+#include "Potion.h"
 
 using namespace std;
 
@@ -179,7 +180,6 @@ void parseElement(istream & input, string sPrefix,
 		{
 			parseElement(input, sPrefix + "  ", mConstructors, vObjects, pObject);
 		}
-
 	}
 
 }
@@ -200,6 +200,7 @@ void parseElement(istream & input, string sPrefix,
 		mapConstructor["Entity"] = []() {return new Entity;};
 		mapConstructor["Character"] = []() {return new Character;};
 		mapConstructor["Consumable"] = []() {return new Consumable;};
+		mapConstructor["Potion"] = []() {return new Potion;};
 		mapConstructor["Equipment"] = []() {return new Equipment;};
 		mapConstructor["Character"] = []() {return new Character;};
 		mapConstructor["Player"] = []() {return new Player;};

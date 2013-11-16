@@ -18,9 +18,9 @@ public:
 	
 	int getRow() const;
 	int getCol() const;
-	vector<Item*> getItems() const;
+	vector<Item*> & getItems();
 	void addItem(Item * item);
-	void removeItem();
+	void removeItem(int i);
 	char getSymbol() const;
 	void setSymbol(char symbol);
 	bool isPassable() const;

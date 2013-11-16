@@ -8,7 +8,6 @@ class Weapon : public Equipment
 public:
 	Weapon();
 	Weapon(string name, int attackBonus, int weaponType);
-
 	virtual int getAttackBonus();
 	virtual void setAttackBonus(int iAttackBonus);
 	virtual int getWeaponType();
