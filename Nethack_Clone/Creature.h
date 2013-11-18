@@ -15,6 +15,8 @@ public:
 	Creature();
 	virtual bool isHostile();
 	virtual void setHostile(bool bHostile);
+	virtual int getAttackValue();
+	virtual void setAttackValue(int attackV);
 	virtual void dumpObject();
 	virtual void dumpObjectData();
 	virtual void writeFragment(ostream & output);
@@ -24,6 +26,7 @@ public:
 private:
 	bool canMove(int row, int col, Floor* fl);	//Helper function to check if a tile can be moved into (no monster and passable)
 	bool m_bHostile;
+	int iAttackValue;
 };
 
 #endif

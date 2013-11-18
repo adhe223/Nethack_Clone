@@ -50,7 +50,7 @@ Item * ItemFactory::generateItem()
 {
 	if (m_vItems.size() > 0)
 	{
-		int iRand = randomValue(m_vItems.size() - 1);
+		int iRand = randomValue(m_vItems.size());
 		Item * pItem = m_vItems[iRand];
 		Item * pReturnValue = new Item(*pItem);
 		return pReturnValue;

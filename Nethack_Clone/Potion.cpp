@@ -33,7 +33,7 @@ void Potion::dumpObjectData()
 {
 	Consumable::dumpObjectData();
 
-	cout << "  Health Mod: " << getHealthMod() << endl;
+	cout << "Health Mod: " << getHealthMod() << endl;
 }
 
 void Potion::writeFragment(ostream & output)

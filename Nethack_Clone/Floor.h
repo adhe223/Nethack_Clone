@@ -47,7 +47,7 @@ private:
 	int iMaxRoomHeight;	//Largest height a room can have
 
 	vector<Creature *> vCreatures;
-	vector<Item *> vItems;
+	//vector<Item *> vItems;
 };
 
 #endif

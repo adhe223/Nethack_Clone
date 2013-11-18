@@ -12,6 +12,7 @@
     <health>15</health>
     <symbol>o</symbol>
     <hostile>true</hostile>
+	<attack>4</attack>
   </Creature>
 
   <Creature>
@@ -19,6 +20,7 @@
     <health>6</health>
     <symbol>k</symbol>
     <hostile>true</hostile>
+	<attack>1</attack>
   </Creature>
 
   <Creature>
@@ -26,6 +28,7 @@
     <health>25</health>
     <symbol>o</symbol>
     <hostile>true</hostile>
+	<attack>7</attack>
   </Creature>
 
   <Creature>
@@ -33,6 +36,7 @@
     <health>4</health>
     <symbol>g</symbol>
     <hostile>true</hostile>
+	<attack>1</attack>
   </Creature>
 
   <Creature>
@@ -40,6 +44,7 @@
     <health>15</health>
     <symbol>G</symbol>
     <hostile>false</hostile>
+	<attack>3</attack>
   </Creature>
 
 
@@ -93,9 +98,14 @@
     <symbol>[</symbol>
     <defenseBonus>12</defenseBonus>
   </Armor>
-
-
-
+  
+  <Potion>
+	<name>health potion</name>
+	<weight>3</weight>
+	<value>35</value>
+	<symbol>p</symbol>
+	<healthmod>5</healthmod>
+  </Potion>
 </World>
 
 

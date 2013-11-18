@@ -2,8 +2,11 @@
 #include "Consumable.h"
 #include "Creature.h"
 #include "Potion.h"
+#include "ItemFactory.h"
 #include <string>
 #include <iostream>
+#include <ctime>
+#include <random>
 
 using namespace std;
 
@@ -28,7 +31,7 @@ bool Player::canMove(int row, int col, Floor* fl)
 	Character * ch = fl->getTile(row, col)->getCharacter();
 	if (ch != NULL)
 	{
-		attack(ch);
+		attack(fl, ch);
 		return false;
 	}
 
@@ -85,7 +88,7 @@ void Player::move(Floor* fl, char dir)
 	}
 }
 
-void Player::attack(Character * target)
+void Player::attack(Floor * fl, Character * target)
 {
 	target->setHealth(target->getHealth() - 1);
 	cout << "Attacked a " << target->getName() << " with your " << weapon->getName() << "!" << endl;
@@ -101,6 +104,19 @@ void Player::attack(Character * target)
 		if (cr != NULL)
 		{
 			cr->giveExp(this);
+
+			//Randomly drop an item where the creature was
+			ItemFactory & itemFact = ItemFactory::instance();
+
+			int randInt = ItemFactory::randomValue(100);
+			int dropProb = 30;
+			if (dropProb > randInt)
+			{
+				//Drop an item on the spot
+				Item * randItem = itemFact.generateItem();
+				fl->getTile(target->getRow(), target->getCol())->addItem(randItem);
+				cout << "The " << target->getName() << " dropped a " << randItem->getName() << "!" <<endl;
+			}
 		}
 	}
 }
@@ -149,19 +165,11 @@ void Player::use(Floor * fl)
 			fl->getMap()[getRow()][getCol()]->removeItem(i);
 		}
 
-		//Is Armor
-		Armor * pArm = dynamic_cast<Armor*>(pIt);
-		if (pArm != NULL)
+		//Is Equipment
+		Equipment * pEquip = dynamic_cast<Equipment*>(pIt);
+		if (pEquip != NULL)
 		{
-			equip(pArm);
-			fl->getMap()[getRow()][getCol()]->removeItem(i);
-		}
-
-		//Is Weapon
-		Weapon * pWeap = dynamic_cast<Weapon*>(pIt);
-		if (pWeap != NULL)
-		{
-			equip(pWeap);
+			equip(pEquip);
 			fl->getMap()[getRow()][getCol()]->removeItem(i);
 		}
 

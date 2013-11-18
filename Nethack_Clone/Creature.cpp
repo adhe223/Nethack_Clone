@@ -92,6 +92,7 @@ Creature::Creature()
 {
 	// Such a hostile world...
 	m_bHostile = true;
+	iAttackValue = 1;
 }
 
 bool Creature::isHostile()
@@ -104,11 +105,21 @@ void Creature::setHostile(bool bHostile)
 	m_bHostile = bHostile;
 }
 
+int Creature::getAttackValue()
+{
+	return iAttackValue;
+}
+
+void Creature::setAttackValue(int attack)
+{
+	iAttackValue = attack;
+}
+
 void Creature::attack(Character * target)
 {
 	//Attack does damage based on the maxHealth of the creature
-	cout << "The " << getName() << " attacks and does " << getMaxHealth()/8 << " damage!" << endl;
-	int remHP = target->getHealth() - (getMaxHealth()/8);
+	cout << "The " << getName() << " attacks and does " << getAttackValue() << " damage!" << endl;
+	int remHP = target->getHealth() - getAttackValue();
 	if (remHP <= 0)
 	{
 		cout << "The vitality drains from your body, GAME OVER." << endl;
@@ -142,6 +153,8 @@ void Creature::dumpObjectData()
 		cout << "false";
 	}
 	cout << endl;
+	
+	cout << "    Attack: " << iAttackValue << endl;
 }
 
 void Creature::writeFragment(ostream & output)
@@ -168,6 +181,11 @@ void Creature::writeDataAsFragment(ostream & output)
 	}
 	output	<< "</hostile>"
 		<< endl;
+
+	output << "	<attack>"
+		<< getAttackValue()
+		<< "</attack>"
+		<<endl;
 }
 
 void Creature::setElementData(string sElementName, string sValue)
@@ -178,6 +196,10 @@ void Creature::setElementData(string sElementName, string sValue)
 	{
 		if (sValue == "false"){setHostile(false);}
 		else {setHostile(true);}
+	}
+	else if (sElementName == "attack")
+	{
+		setAttackValue(atoi(sValue.c_str()));
 	}
 
 	//Test

@@ -111,12 +111,6 @@ int main(int argc, char * argv[])
 			pl->use(dl->getCurrentFloorObj());
 		}
 
-		//Move mosters
-		for (int i = 0; i < vCreatures.size(); i++)
-		{
-			vCreatures[i]->move(dl->getFloor(dl->getCurrentFloor()), pl);
-		}
-
 		//Delete dead monsters
 		int size = vCreatures.size();
 		for (int i = 0; i < size; i++)
@@ -131,6 +125,12 @@ int main(int argc, char * argv[])
 				delete toDelete;	//delete object
 				size = size - 1;
 			}
+		}
+
+		//Move mosters
+		for (int i = 0; i < vCreatures.size(); i++)
+		{
+			vCreatures[i]->move(dl->getFloor(dl->getCurrentFloor()), pl);
 		}
 
 		//Add more creatures every nth turn

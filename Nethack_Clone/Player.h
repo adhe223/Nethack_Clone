@@ -16,7 +16,7 @@ public:
 	Player();
 
 	virtual void move(Floor* fl, char dir);
-	virtual void attack(Character * target);
+	virtual void attack(Floor * fl, Character * target);
 	virtual void regen();
 	virtual void levelUp();
 	virtual void use(Floor * fl);
