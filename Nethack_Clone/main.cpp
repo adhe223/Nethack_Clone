@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <ostream>
 
 #include "Entity.h"
 #include "Item.h"
@@ -24,6 +25,34 @@
 #include <functional>
 
 using namespace std;
+
+vector<vector<char>> buildOutputVector(Floor * fl)
+{
+	vector<vector<char>> result;
+
+	for (int row = 0; row < fl->getHeight(); row++)
+	{
+		result.push_back(vector<char>());
+		for (int col = 0; col < fl->getWidth(); col++)
+		{
+			result[row].push_back(fl->getTile(row, col)->outputChar());
+		}
+	}
+
+	return result;
+}
+
+void printLevel(vector<vector<char>> toPrint, ostream & output)
+{
+	for (int row = 0; row < toPrint.size(); row++)
+	{
+		for (int col = 0; col < toPrint[row].size(); col++)
+		{
+			output << toPrint[row][col];
+		}
+		cout << endl;
+	}
+}
 
 void dumpObjects(vector <XMLSerializable*> vObjects) {
 	for (auto pObject : vObjects) {
@@ -69,10 +98,15 @@ int main(int argc, char * argv[])
 			dl->placePlayer(pl, bDown);
 
 			//Create and place a number between 0 and 10 items for the dungeon and put into vector
-			int iNumItems = ItemFactory::randomValue(11);
-			for (int i = 0; i < iNumItems; i++)
+			if (!dl->getCurrentFloorObj()->getItemsPlaced())
 			{
-				dl->placeItem(itemFact.generateItem());
+				int iNumItems = ItemFactory::randomValue(11);
+				for (int i = 0; i < iNumItems; i++)
+				{
+					dl->placeItem(itemFact.generateItem());
+				}
+
+				dl->getCurrentFloorObj()->setItemsPlaced(true);
 			}
 
 			//Place an initial creature if none are on floor
@@ -93,8 +127,10 @@ int main(int argc, char * argv[])
 		}
 	
 		cout << "Floor: " << dl->getCurrentFloor() << endl;
-		dl->getFloor(dl->getCurrentFloor())->printFloor(cout);
-		
+		//dl->getFloor(dl->getCurrentFloor())->printFloor(cout);
+		vector<vector<char>> vvToPrint = buildOutputVector(dl->getCurrentFloorObj());
+		printLevel(vvToPrint, cout);
+
 		//Allow the player to enter input
 		char input;
 		cout << endl << "Please enter the action you want to perform: ";

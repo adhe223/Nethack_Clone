@@ -27,6 +27,7 @@ public:
 	void setPassable(bool pass);
 
 	void printTile(std::ostream & output);
+	char outputChar();
 
 private:
 	char cSymbol;

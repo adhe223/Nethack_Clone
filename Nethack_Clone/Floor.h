@@ -21,6 +21,8 @@ public:
 	int getHeight() const;
 	int getWidth() const;
 	vector<Creature *> & getCreatures();
+	bool getItemsPlaced();
+	void setItemsPlaced(bool value);
 	void addCreature(Creature * cr);
 	void removeDeadCreatures();
 
@@ -47,7 +49,7 @@ private:
 	int iMaxRoomHeight;	//Largest height a room can have
 
 	vector<Creature *> vCreatures;
-	//vector<Item *> vItems;
+	bool itemsPlaced;
 };
 
 #endif

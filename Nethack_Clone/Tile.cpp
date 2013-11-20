@@ -89,3 +89,10 @@ void Tile::printTile(std::ostream & output)
 	else if (vItems.size() != 0) {output << vItems.back()->getSymbol();}
 	else {output << getSymbol();}
 }
+
+char Tile::outputChar()
+{
+	if (character != NULL) {return character->getSymbol();}
+	else if (vItems.size() != 0) {return vItems.back()->getSymbol();}
+	else {return getSymbol();}
+}

@@ -29,6 +29,8 @@ Floor::Floor(int floor, int numFloors, int floorWidth, int floorHeight)
 	drawTunnel();
 	drawRooms();
 	drawStairs();
+
+	itemsPlaced = false;
 }
 
 Tile* Floor::getTile(int row, int col)
@@ -66,6 +68,16 @@ vector<Creature *> & Floor::getCreatures()
 	return vCreatures;
 }
 	
+bool Floor::getItemsPlaced()
+{
+	return itemsPlaced;
+}
+
+void Floor::setItemsPlaced(bool value)
+{
+	itemsPlaced = value;
+}
+
 void Floor::printFloor(ostream & output)
 {
 	for (int row = 0; row < iHeight; row++)
