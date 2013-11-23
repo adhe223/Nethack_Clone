@@ -11,6 +11,7 @@ class Tile
 public:
 	Tile(int row, int col);
 	Tile(int row, int col, char symbol, bool pass);
+	~Tile();
 
 	void setCharacter(Character* ch);
 	Character* getCharacter();

@@ -7,6 +7,7 @@
 #include <iostream>
 #include <ctime>
 #include <random>
+#include <iomanip>
 
 using namespace std;
 
@@ -15,8 +16,21 @@ Player::Player()
 	m_iExperience = 0;
 	m_iLevel = 0;
 	regenCount = 1;
-	score = 0;
-	weapon = new Weapon("Bare Hands", 1, 0);
+	Weapon * wp = new Weapon("Bare Hands", '(', 0, 0, 1, 0);
+	weapon = wp;
+	Armor * ar = new Armor("Chest Hair", ']', 0, 1, 0);
+	armor = ar;
+}
+
+Player::~Player()
+{
+	delete armor;
+	delete weapon;
+
+	for (int i = 0; i < vInventory.size(); i++)
+	{
+		delete vInventory[i];
+	}
 }
 
 bool Player::canMove(int row, int col, Floor* fl)
@@ -90,7 +104,7 @@ void Player::move(Floor* fl, char dir)
 
 void Player::attack(Floor * fl, Character * target)
 {
-	target->setHealth(target->getHealth() - 1);
+	target->setHealth(target->getHealth() - weapon->getAttackBonus());
 	cout << "Attacked a " << target->getName() << " with your " << weapon->getName() << "!" << endl;
 
 	if (target->getHealth() > 0)
@@ -125,7 +139,7 @@ void Player::attack(Floor * fl, Character * target)
 void Player::regen()
 {
 	regenCount++;
-	if (regenCount % 2 == 0 && getHealth() != getMaxHealth())
+	if (regenCount % 2 == 0 && getHealth() < getMaxHealth())
 	{
 		setHealth(getHealth() + 1);
 		regenCount = 0;
@@ -155,6 +169,7 @@ void Player::use(Floor * fl)
 
 	for (int i = 0; i < items.size(); i++)
 	{
+		bool cast = false;
 		Item * pIt = items[i];
 
 		//Is consumable
@@ -163,19 +178,32 @@ void Player::use(Floor * fl)
 		{
 			cons->use(static_cast<Character*>(this));
 			fl->getMap()[getRow()][getCol()]->removeItem(i);
+			cast = true;
 		}
 
 		//Is Equipment
-		Equipment * pEquip = dynamic_cast<Equipment*>(pIt);
-		if (pEquip != NULL)
+		if (!cast)
 		{
-			equip(pEquip);
-			fl->getMap()[getRow()][getCol()]->removeItem(i);
-		}
+			Equipment * pEquip = dynamic_cast<Equipment*>(pIt);
+			if (pEquip != NULL)
+			{
+				equip(pEquip);
+				fl->getMap()[getRow()][getCol()]->removeItem(i);
+				cast = true;
+			}
 
-		//Else add to inventory
-		vInventory.push_back(pIt);
-		fl->getMap()[getRow()][getCol()]->removeItem(i);
+			//Else add to inventory
+			if (!cast)
+			{
+				if (pIt->getName() == "The Holy Grail")
+				{
+					cout << "You have found the mythical holy grail! You are truly the greatest explorer to grace our epoch!" << endl;
+				}
+
+				vInventory.push_back(pIt);
+				fl->getMap()[getRow()][getCol()]->removeItem(i);
+			}
+		}
 	}
 }
 
@@ -184,14 +212,14 @@ void Player::equip(Equipment * eq)
 	Armor * pArm = dynamic_cast<Armor*>(eq);
 	if (pArm != NULL)
 	{
-		vInventory.push_back(pArm);
+		vInventory.push_back(armor);
 		armor = pArm;
 		cout << "You have equipped a " << pArm->getName() << "!" << endl;
 	}
 	Weapon * pWeap = dynamic_cast<Weapon *>(eq);
 	if (pWeap != NULL)
 	{
-		vInventory.push_back(pWeap);
+		vInventory.push_back(weapon);
 		weapon = pWeap;
 		cout << "You have equipped a " << pWeap->getName() << "!" << endl;
 	}
@@ -240,6 +268,33 @@ void Player::setWeapon(Weapon * wp)
 void Player::setArmor(Armor * ar)
 {
 	armor = ar;
+}
+
+vector<Item*> Player::getInventory()
+{
+	return vInventory;
+}
+
+void Player::displayInventory()
+{
+	cout << endl << endl << "%%%%%%%%%%%%%%%% Inventory %%%%%%%%%%%%%%%%" << endl;
+	cout << "%%% " << setw(12) << "Name" << setw(10) << " Value" << "  Weight" << endl;
+	for (int i = 0; i < vInventory.size(); i++)
+	{
+		Item * pItem = vInventory[i];
+		cout << "% " << i + 1 << ". " << setw(12) << pItem->getName() << setw(7) << pItem->getValue() 
+			<< "      " << pItem->getWeight() << endl;
+	}
+
+	//Also display weapon and armor
+	cout << endl << "%%%%%%%%%%% Weapon and Armor %%%%%%%%%%%%%%" << endl;
+	cout << "% " << "Weapon: " << setw(12) << weapon->getName() << setw(6) << weapon->getValue() 
+			<< "     " << weapon->getWeight() << endl;
+	cout << "% " << "Armor: " << setw(12) << armor->getName() << setw(6) << armor->getValue() 
+			<< "     " << armor->getWeight() << endl << endl;
+
+	//Now take in user input
+
 }
 
 void Player::dumpObject()

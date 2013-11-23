@@ -7,6 +7,22 @@ Potion::Potion()
 	iHealthMod = 5;
 }
 
+Potion::Potion(string name, int iHealth)
+{
+	setName(name);
+	iHealthMod = iHealth;
+}
+
+Potion::Potion(Potion * po)
+{
+	setName(po->getName());
+	setSymbol(po->getSymbol());
+	setValue(po->getValue());
+	setWeight(po->getWeight());
+	setQuantity(po->getQuantity());
+	iHealthMod = po->getHealthMod();
+}
+
 int Potion::getHealthMod()
 {
 	return iHealthMod;
@@ -20,6 +36,8 @@ void Potion::setHealthMod(int iHealth)
 void Potion::use(Character * user)
 {
 	user->setHealth(user->getHealth() + iHealthMod);
+	cout << "Health potion applied!" << endl;
+	cout << "You know have " << user->getHealth() << " hp!" << endl;
 }
 
 void Potion::dumpObject()

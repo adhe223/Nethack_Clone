@@ -3,6 +3,11 @@
 
 using namespace std;
 
+Equipment::Equipment()
+{
+	m_sSlot = "";
+}
+
 string Equipment::getSlot()
 {
 	return m_sSlot;

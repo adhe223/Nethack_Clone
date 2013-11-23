@@ -6,11 +6,25 @@ Weapon::Weapon()
 	m_iWeaponType = 0;
 }
 
-Weapon::Weapon(string name, int attackBonus, int weaponType)
+Weapon::Weapon(string name, char symbol, int value, int weight, int attackBonus, int weaponType)
 {
 	setName(name);
-	setAttackBonus(attackBonus);
-	setWeaponType(weaponType);
+	setSymbol(symbol);
+	setValue(value);
+	setWeight(weight);
+	m_iAttackBonus = attackBonus;
+	m_iWeaponType = weaponType;
+}
+
+Weapon::Weapon(Weapon * wp)
+{
+	setName(wp->getName());
+	setSymbol(wp->getSymbol());
+	setValue(wp->getValue());
+	setWeight(wp->getWeight());
+	setSlot(wp->getSlot());
+	m_iAttackBonus = wp->getAttackBonus();
+	m_iWeaponType = wp->getWeaponType();
 }
 
 int Weapon::getAttackBonus()

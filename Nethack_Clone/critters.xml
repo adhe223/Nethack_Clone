@@ -26,13 +26,7 @@
   </Creature>
   <Creature>
     <name>kobold</name>
-    <health>8</health>
-    <symbol>k</symbol>
-    <hostile>true</hostile>
-  </Creature>
-  <Creature>
-    <name>kobold</name>
-    <health>8</health>
+    <health>10</health>
     <symbol>k</symbol>
     <hostile>true</hostile>
   </Creature>

@@ -7,7 +7,9 @@ class Weapon : public Equipment
 {
 public:
 	Weapon();
-	Weapon(string name, int attackBonus, int weaponType);
+	Weapon(string name, char symbol, int value, int weight, int attackBonus, int weaponType);
+	Weapon(Weapon * wp);
+
 	virtual int getAttackBonus();
 	virtual void setAttackBonus(int iAttackBonus);
 	virtual int getWeaponType();

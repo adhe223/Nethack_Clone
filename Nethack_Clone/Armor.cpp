@@ -8,6 +8,25 @@ Armor::Armor()
 	m_iDefenseBonus = 0;
 }
 
+Armor::Armor(string name, char symbol, int value, int weight, int iDefenseBonus)
+{
+	setName(name);
+	setSymbol(symbol);
+	setValue(value);
+	setWeight(weight);
+	m_iDefenseBonus = iDefenseBonus;
+}
+
+Armor::Armor(Armor * ar)
+{
+	setName(ar->getName());
+	setSymbol(ar->getSymbol());
+	setValue(ar->getValue());
+	setWeight(ar->getWeight());
+	setSlot(ar->getSlot());
+	m_iDefenseBonus = ar->getDefenseBonus();
+}
+
 int Armor::getDefenseBonus()
 {
 	return m_iDefenseBonus;

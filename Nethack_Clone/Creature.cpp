@@ -84,8 +84,8 @@ void Creature::move(Floor * fl, Player * pl)
 
 void Creature::giveExp(Player * pl)
 {
-	pl->setExperience(pl->getExperience() + getMaxHealth()/2);
-	cout << "The " << getName() << " gives you " << getMaxHealth()/2 << " exp!" << endl;
+	pl->setExperience(pl->getExperience() + (getMaxHealth()/2));
+	cout << "The " << getName() << " gives you " << (getMaxHealth()/2) << " exp!" << endl;
 }
 
 Creature::Creature()
@@ -118,8 +118,12 @@ void Creature::setAttackValue(int attack)
 void Creature::attack(Character * target)
 {
 	//Attack does damage based on the maxHealth of the creature
-	cout << "The " << getName() << " attacks and does " << getAttackValue() << " damage!" << endl;
-	int remHP = target->getHealth() - getAttackValue();
+	Player * pl = dynamic_cast<Player*>(target);
+	int attackValue = 0;
+	if (getAttackValue() - pl->getArmor()->getDefenseBonus() < 0) {int attackValue = 0;}
+	else {attackValue = getAttackValue() - pl->getArmor()->getDefenseBonus();}
+	cout << "The " << getName() << " attacks and does " << attackValue << " damage!" << endl;
+	int remHP = target->getHealth() - attackValue;
 	if (remHP <= 0)
 	{
 		cout << "The vitality drains from your body, GAME OVER." << endl;

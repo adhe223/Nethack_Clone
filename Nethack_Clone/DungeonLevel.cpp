@@ -21,6 +21,14 @@ DungeonLevel::DungeonLevel(int numFloors)
 	}
 }
 
+DungeonLevel::~DungeonLevel()
+{
+	for (int i = 0; i < vFloors.size(); i++)
+	{
+		delete vFloors[i];
+	}
+}
+
 void DungeonLevel::placePlayer(Player * pl, bool down)
 {
 	Floor* fl = getFloor(currFloor);
@@ -134,4 +142,9 @@ void DungeonLevel::setCurrentFloor(int floor)
 Floor * DungeonLevel::getCurrentFloorObj()
 {
 	return vFloors[currFloor];
+}
+
+int DungeonLevel::getNumFloors()
+{
+	return iNumFloors;
 }

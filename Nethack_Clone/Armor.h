@@ -7,6 +7,9 @@ class Armor : public Equipment
 {
 public:
 	Armor();
+	Armor(std::string name, char symbol, int value, int weight, int iDefenseBonus);
+	Armor(Armor * ar);
+
 	virtual int getDefenseBonus();
 	virtual void setDefenseBonus(int iDefenseBonus);
 	virtual void dumpObject();

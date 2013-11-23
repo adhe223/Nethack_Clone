@@ -7,6 +7,8 @@ class Item : public Entity
 {
 public:
 	Item();
+	Item(std::string name, char symbol, int weight, int value);
+
 	virtual int getWeight();
 	virtual void setWeight(int iWeight);
 	virtual int getValue();

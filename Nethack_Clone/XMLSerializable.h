@@ -14,5 +14,4 @@ public:
 	virtual void setElementData(std::string sElementName, std::string sValue);
 };
 
-
 #endif

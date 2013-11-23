@@ -80,7 +80,6 @@
     <ClCompile Include="parser.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Tile.cpp" />
-    <ClCompile Include="unitTest.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="XMLSerializable.cpp" />
   </ItemGroup>

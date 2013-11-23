@@ -93,6 +93,7 @@ void Character::setElementData(string sElementName, string sValue)
 	if (sElementName == "health")
 	{
 		setHealth(atoi(sValue.c_str()));
+		setMaxHealth(atoi(sValue.c_str()));
 	}
 }
 

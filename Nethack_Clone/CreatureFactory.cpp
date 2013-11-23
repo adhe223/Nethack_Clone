@@ -36,6 +36,10 @@ CreatureFactory::CreatureFactory()
 
 CreatureFactory::~CreatureFactory()
 {
+	for (int i = 0; i < m_vCreatures.size(); i++)
+	{
+		delete m_vCreatures[i];
+	}
 }
 
 int CreatureFactory::randomValue(int iMax)

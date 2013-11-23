@@ -76,16 +76,48 @@ void outputXML(vector<XMLSerializable*> & vObjects, ostream & output)
 	output << "</World>" << endl;
 }
 
+int calculateScore(Player * pl)
+{
+	int sum = 0;
+	sum = sum + (pl->getExperience()) * 2;
+
+	//3 points for each level
+	sum = sum + pl->getLevel() * 2;
+
+	//Loop through inventory and add together the values of all items (Holy Grail bonus implemented here)
+	vector<Item*> invent = pl->getInventory();
+	for (int i = 0; i < invent.size(); i++)
+	{
+		sum = sum + invent[i]->getValue();
+	}
+	sum = sum + pl->getArmor()->getValue();
+	sum = sum + pl->getWeapon()->getValue();
+
+	return sum;
+}
+
 int main(int argc, char * argv[])
 {
 	bool newFloor = true;
-	DungeonLevel * dl = new DungeonLevel(5);
+	DungeonLevel * dl = new DungeonLevel(50);
 	CreatureFactory & cf = CreatureFactory::instance();
 	ItemFactory & itemFact = ItemFactory::instance();
 	Player * pl = new Player();
+
+	//End conditions
 	bool quit = false;
+	bool playerQuit = false;
+	bool dead = false;
+	bool exit = false;
 	bool bDown = true;
 	int creatureGenCount = 1;
+
+	cout << "Basic Controls:" << endl;
+	cout << "w,a,s,d - Move player" << endl;
+	cout << "i - Shows inventory, you can then pick an item to use (equip if equipment) or exit" << endl;
+	cout << "u - Use item on floor, equips if item is equipment, consumes the item " <<
+		"if it of a consumable type. Otherwise it adds the item to inventory." << endl;
+	cout << "q - Quit game and display your score" << endl << endl;
 
 	//Main driving logic
 	while (!quit)
@@ -103,10 +135,18 @@ int main(int argc, char * argv[])
 				int iNumItems = ItemFactory::randomValue(11);
 				for (int i = 0; i < iNumItems; i++)
 				{
-					dl->placeItem(itemFact.generateItem());
+					Item * toPlace = itemFact.generateItem();
+					dl->placeItem(toPlace);
 				}
 
 				dl->getCurrentFloorObj()->setItemsPlaced(true);
+
+				//If last level place the Holy Grail
+				if (dl->getCurrentFloor() == dl->getNumFloors() - 1)
+				{
+					Item * toPlace = new Item("The Holy Grail", 'H', 10, 1000);
+					dl->placeItem(toPlace);
+				}
 			}
 
 			//Place an initial creature if none are on floor
@@ -142,9 +182,20 @@ int main(int argc, char * argv[])
 			pl->move(dl->getFloor(dl->getCurrentFloor()), input);
 		}
 
+		if (input == 'i')
+		{
+			pl->displayInventory();
+		}
+
 		if (input == 'u')
 		{
 			pl->use(dl->getCurrentFloorObj());
+		}
+
+		if (input == 'q')
+		{
+			quit = true;
+			playerQuit = true;
 		}
 
 		//Delete dead monsters
@@ -182,17 +233,17 @@ int main(int argc, char * argv[])
 			dl->placeCreature(vCreatures.back());
 		}
 
-		if (pl->getHealth() <= 0) {quit = true;}
+		if (pl->getHealth() <= 0) {quit = true; dead = true;}
 		if (pl->getHealth() != pl->getMaxHealth()) {pl->regen();}
 		pl->levelUp();
 		creatureGenCount++;
 
 		//Check if player moved onto stairwell and needs to go to different floor
 		char cOn = dl->getFloor(dl->getCurrentFloor())->getTile(pl->getRow(), pl->getCol())->getSymbol();
-		if (cOn == '>')
+		if (cOn == '>' && (input == 'w' || input == 'a' || input == 's' || input == 'd'))
 		{
 			//Check if leaving the dungeon
-			if (dl->getCurrentFloor() == 0) {quit = true;}
+			if (dl->getCurrentFloor() == 0) {quit = true; exit = true;}
 			else 
 			{
 				dl->getFloor(dl->getCurrentFloor())->getTile(pl->getRow(), pl->getCol())->clearCharacter();
@@ -202,7 +253,7 @@ int main(int argc, char * argv[])
 			
 			newFloor = true;
 		}
-		else if (cOn == '<')
+		else if (cOn == '<' && (input == 'w' || input == 'a' || input == 's' || input == 'd'))
 		{
 			dl->getFloor(dl->getCurrentFloor())->getTile(pl->getRow(), pl->getCol())->clearCharacter();
 			dl->setCurrentFloor(dl->getCurrentFloor() + 1);
@@ -212,7 +263,21 @@ int main(int argc, char * argv[])
 
 		cout << endl;
 	}
-	cout << endl << "You have escaped the dungeon with a final score of " << pl->getExperience() * 2 << "!" << endl;
+
+	int playerScore = calculateScore(pl);
+
+	if (playerQuit)
+	{
+		cout << endl << "You have quit the game with a final score of " << playerScore << "!" << endl;
+	}
+	else if (exit)
+	{
+		cout << endl << "You have escaped the dungeon with a final score of " << playerScore << "!" << endl;
+	}
+	else
+	{
+		cout << endl << "Your story ends here with a final score of " << playerScore << "!" << endl; 
+	}
 
 	cin.ignore(200, '\n');
 	cin.ignore(200, '\n');

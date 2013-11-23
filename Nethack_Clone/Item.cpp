@@ -9,6 +9,14 @@ Item::Item()
 	m_iValue = 0;
 }
 
+Item::Item(string name, char symbol, int weight, int value)
+{
+	setName(name);
+	setSymbol(symbol);
+	m_iWeight = weight;
+	m_iValue = value;
+}
+
 void Item::setWeight(int iWeight)
 {
 	m_iWeight = iWeight;

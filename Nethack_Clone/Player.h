@@ -14,6 +14,7 @@ class Player : public Character
 {
 public:
 	Player();
+	~Player();
 
 	virtual void move(Floor* fl, char dir);
 	virtual void attack(Floor * fl, Character * target);
@@ -30,6 +31,8 @@ public:
 	virtual Armor * getArmor();
 	virtual void setWeapon(Weapon * wp);
 	virtual void setArmor(Armor * ar);
+	virtual vector<Item*> getInventory();
+	virtual void displayInventory();
 
 	virtual void dumpObject();
 	virtual void dumpObjectData();
@@ -43,7 +46,6 @@ private:
 	int m_iExperience;
 	int m_iLevel;
 	int regenCount;
-	int score;
 	
 	//Have a inventory of item objects, then can equip a weapon and armor (still located in inventory)
 	Weapon* weapon;

@@ -11,6 +11,7 @@ class Floor
 {
 public:
 	Floor(int floor, int numFloors, int floorWidth, int floorHeight);		//Constructs floor
+	~Floor();
 	
 	void printFloor(std::ostream & output);
 

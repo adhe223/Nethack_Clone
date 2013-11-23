@@ -10,6 +10,7 @@ class DungeonLevel
 {
 public:
 	DungeonLevel(int numFloors);		//Constructs map
+	~DungeonLevel();
 
 	void placePlayer(Player * pl, bool down);	//Places character for beginning of each floor
 	void placeCreature(Creature * cr);	//Places a creature randomly into the dungeon
@@ -22,6 +23,7 @@ public:
 	void setCurrentFloor(int floor);
 	std::vector<Floor *> getFloors() const;
 	Floor * getFloor(int numFloor);
+	int getNumFloors();
 
 private:
 	int currFloor;	//Current floor for player

@@ -8,6 +8,8 @@
 class Creature : public Character
 {
 public:
+
+
 	virtual void attack(Character * target);
 	virtual void move(Floor * fl, Player * pl);
 	virtual void giveExp(Player * pl);

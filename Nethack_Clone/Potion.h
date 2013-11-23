@@ -7,6 +7,8 @@ class Potion : public Consumable
 {
 public:
 	Potion();
+	Potion(std::string name, int iHealth); 
+	Potion(Potion * po);
 
 	virtual void use(Character * user);
 	virtual int getHealthMod();

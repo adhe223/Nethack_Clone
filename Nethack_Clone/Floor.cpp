@@ -33,6 +33,22 @@ Floor::Floor(int floor, int numFloors, int floorWidth, int floorHeight)
 	itemsPlaced = false;
 }
 
+Floor::~Floor()
+{
+	for (int i = 0; i < vCreatures.size(); i++)
+	{
+		delete vCreatures[i];
+	}
+
+	for (int i = 0; i < vMap.size(); i++)
+	{
+		for (int j = 0; j < vMap[i].size(); j++)
+		{
+			delete vMap[i][j];
+		}
+	}
+}
+
 Tile* Floor::getTile(int row, int col)
 {
 	return vMap[row][col];

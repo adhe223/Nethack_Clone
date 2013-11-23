@@ -2,6 +2,10 @@
 #include "Item.h"
 #include "XMLSerializable.h"
 #include "parser.h"
+#include "Armor.h"
+#include "Weapon.h"
+#include "Consumable.h"
+#include "Potion.h"
 
 #include <map>
 #include <random>
@@ -44,6 +48,10 @@ ItemFactory::ItemFactory()
 
 ItemFactory::~ItemFactory()
 {
+	for (int i = 0; i < m_vItems.size(); i++)
+	{
+		delete m_vItems[i];
+	}
 }
 
 Item * ItemFactory::generateItem()
@@ -53,6 +61,33 @@ Item * ItemFactory::generateItem()
 		int iRand = randomValue(m_vItems.size());
 		Item * pItem = m_vItems[iRand];
 		Item * pReturnValue = new Item(*pItem);
+
+		//If armor, weapon, consumable, or potion we must specify
+		if (dynamic_cast<Armor*>(pItem) != NULL)
+		{
+			Armor * ar = dynamic_cast<Armor*>(pItem);
+			pReturnValue = new Armor(*ar);
+		}
+		else if (dynamic_cast<Weapon*>(pItem) != NULL)
+		{
+			Weapon * wp = dynamic_cast<Weapon*>(pItem);
+			pReturnValue = new Weapon(*wp);
+		}
+		else if (dynamic_cast<Consumable*>(pItem) != NULL)
+		{
+			if (dynamic_cast<Potion*>(pItem) != NULL)
+			{
+				Potion * po = dynamic_cast<Potion*>(pItem);
+				pReturnValue = new Potion(*po);
+			}
+			else
+			{
+				Consumable * cm = dynamic_cast<Consumable*>(pItem);
+				pReturnValue = new Consumable(*cm);
+			}
+		}
+
+		
 		return pReturnValue;
 	}
 

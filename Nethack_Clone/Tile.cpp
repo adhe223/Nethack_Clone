@@ -1,4 +1,5 @@
 #include "Tile.h"
+#include "Consumable.h"
 using namespace std;
 
 Tile::Tile(int row, int col)
@@ -18,6 +19,16 @@ Tile::Tile(int row, int col, char symbol, bool pass)
 	cSymbol = symbol;
 	bPassable = pass;
 	character = NULL;
+}
+
+Tile::~Tile()
+{
+	delete character;
+
+	for (int i = 0; i < vItems.size(); i++)
+	{
+		delete vItems[i];
+	}
 }
 
 void Tile::setCharacter(Character* ch)
@@ -55,11 +66,19 @@ void Tile::addItem(Item * item)
 	vItems.push_back(item);
 }
 
+//Can only delete pointer if it is a consumable, otherwise it is part of the player
 void Tile::removeItem(int i)
 {
-	Item * toDelete = vItems[i];
-	vItems.erase(vItems.begin() + i);
-	delete toDelete;
+	if (dynamic_cast<Consumable*> (vItems[i]) != NULL)
+	{
+		Item * toDelete = vItems[i];
+		vItems.erase(vItems.begin() + i);
+		delete toDelete;
+	}
+	else
+	{
+		vItems.erase(vItems.begin() + i);
+	}
 }
 
 char Tile::getSymbol() const

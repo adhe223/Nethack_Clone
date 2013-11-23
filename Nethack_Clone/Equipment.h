@@ -7,6 +7,7 @@
 class Equipment : public Item
 {
 public:
+	Equipment();
 	virtual std::string getSlot();
 	virtual void setSlot(std::string sSlot);
 	virtual void dumpObject();

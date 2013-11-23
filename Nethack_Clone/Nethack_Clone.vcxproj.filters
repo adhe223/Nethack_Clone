@@ -63,9 +63,6 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="unitTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\Alex%27s Documents\Github\Nethack_Clone\Nethack_Clone\ItemFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
