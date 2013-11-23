@@ -207,6 +207,32 @@ void Player::use(Floor * fl)
 	}
 }
 
+void Player::useItemInvent(Item * pIt)
+{
+	bool cast = false;
+
+	//Is consumable
+	Consumable * cons = dynamic_cast<Consumable*>(pIt);
+	if (cons != NULL)
+	{
+		cons->use(static_cast<Character*>(this));
+		delete cons;
+		cast = true;
+	}
+
+	//Is Equipment
+	if (!cast)
+	{
+		Equipment * pEquip = dynamic_cast<Equipment*>(pIt);
+		if (pEquip != NULL)
+		{
+			equip(pEquip);
+
+			cast = true;
+		}
+	}
+}
+
 void Player::equip(Equipment * eq)
 {
 	Armor * pArm = dynamic_cast<Armor*>(eq);
@@ -270,12 +296,25 @@ void Player::setArmor(Armor * ar)
 	armor = ar;
 }
 
+int Player::getEncumbrance()
+{
+	int sum = 0;
+	for (int i = 0; i < vInventory.size(); i++)
+	{
+		sum = sum + vInventory[i]->getWeight();
+	}
+	sum = sum + weapon->getWeight();
+	sum = sum + armor->getWeight();
+
+	return sum;
+}
+
 vector<Item*> Player::getInventory()
 {
 	return vInventory;
 }
 
-void Player::displayInventory()
+void Player::displayInventory(Floor * fl)
 {
 	cout << endl << endl << "%%%%%%%%%%%%%%%% Inventory %%%%%%%%%%%%%%%%" << endl;
 	cout << "%%% " << setw(12) << "Name" << setw(10) << " Value" << "  Weight" << endl;
@@ -294,7 +333,36 @@ void Player::displayInventory()
 			<< "     " << armor->getWeight() << endl << endl;
 
 	//Now take in user input
+	cout << "You may select an item to use by inputting its number, drop an item by pressing 'd', or press 0 to exit the inventory: ";
+	string input;
+	cin >> input;
+	
+	//Handle input
+	if (input == "d")
+	{
+		cout << "Which item would you like to drop (must be in inventory)?: ";
+		int toDrop;
+		cin >> toDrop;
 
+		if (cin.fail()) {cout << "Not a valid selection" << endl;}
+		else 
+		{
+			toDrop--;
+			if (toDrop < 0 || toDrop >= vInventory.size()) {cout << "Not a valid selection" << endl;}
+			else
+			{
+				Item * pToDrop = vInventory[toDrop];
+				fl->getTile(getRow(), getCol())->addItem(pToDrop);
+				vInventory.erase(vInventory.begin() + toDrop);
+			}
+		}
+	}
+	else if (atoi(input.c_str()) > 0 && atoi(input.c_str()) <= vInventory.size())
+	{
+		int toUse = atoi(input.c_str()) - 1;
+		this->useItemInvent(vInventory[toUse]);
+		vInventory.erase(vInventory.begin() + toUse);
+	}
 }
 
 void Player::dumpObject()

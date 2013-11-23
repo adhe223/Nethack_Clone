@@ -21,6 +21,7 @@ public:
 	virtual void regen();
 	virtual void levelUp();
 	virtual void use(Floor * fl);
+	virtual void useItemInvent(Item * it);		//Use Item in inventory
 	
 	virtual int getExperience();
 	virtual void setExperience(int iExperience);
@@ -31,8 +32,9 @@ public:
 	virtual Armor * getArmor();
 	virtual void setWeapon(Weapon * wp);
 	virtual void setArmor(Armor * ar);
+	virtual int getEncumbrance();
 	virtual vector<Item*> getInventory();
-	virtual void displayInventory();
+	virtual void displayInventory(Floor * fl);	//Need floor so we can drop the item from inventory and place on map
 
 	virtual void dumpObject();
 	virtual void dumpObjectData();

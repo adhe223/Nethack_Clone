@@ -113,8 +113,9 @@ int main(int argc, char * argv[])
 	int creatureGenCount = 1;
 
 	cout << "Basic Controls:" << endl;
+	cout << "c - Enter cheat code! Codes can be found in documentation" << endl;
 	cout << "w,a,s,d - Move player" << endl;
-	cout << "i - Shows inventory, you can then pick an item to use (equip if equipment) or exit" << endl;
+	cout << "i - Shows inventory, you can then pick an item to use (equip if equipment), drop an item, or exit" << endl;
 	cout << "u - Use item on floor, equips if item is equipment, consumes the item " <<
 		"if it of a consumable type. Otherwise it adds the item to inventory." << endl;
 	cout << "q - Quit game and display your score" << endl << endl;
@@ -177,14 +178,47 @@ int main(int argc, char * argv[])
 		cin >> input;
 		
 		//Control Handling
+		if (input == 'c')
+		{
+			cout << "Input code: ";
+			string sCheatCode;
+			cin >> sCheatCode;
+			if (sCheatCode == "poweroverwhelming")
+			{
+				pl->setMaxHealth(10000);
+				pl->setHealth(10000);
+			}
+			else if (sCheatCode == "scaramanga")
+			{
+				//Replaces current weapon with The Golden Gun
+				Weapon * toDelete = pl->getWeapon();
+				Weapon * wp = new Weapon("Golden Gun", '$', 2300, 5, 500, 0);
+				pl->setWeapon(wp);
+				delete toDelete;
+			}
+			else if (sCheatCode == "upupdowndownleftrightleftrightba")
+			{
+				pl->setExperience(10000);
+				pl->levelUp();
+				pl->setHealth(pl->getMaxHealth());
+			}
+		}
+
 		if (input == 'w' || input == 'a' || input == 's' || input == 'd')
 		{
-			pl->move(dl->getFloor(dl->getCurrentFloor()), input);
+			if (pl->getEncumbrance() < 80)
+			{
+				pl->move(dl->getFloor(dl->getCurrentFloor()), input);
+			}
+			else
+			{
+				cout << "You are over encumbered! You cannot move until you have less than 80 encumbrance (drop items!)." << endl;
+			}
 		}
 
 		if (input == 'i')
 		{
-			pl->displayInventory();
+			pl->displayInventory(dl->getCurrentFloorObj());
 		}
 
 		if (input == 'u')
