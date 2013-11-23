@@ -117,7 +117,6 @@ void Creature::setAttackValue(int attack)
 
 void Creature::attack(Character * target)
 {
-	//Attack does damage based on the maxHealth of the creature
 	Player * pl = dynamic_cast<Player*>(target);
 	int attackValue = 0;
 	if (getAttackValue() - pl->getArmor()->getDefenseBonus() < 0) {int attackValue = 0;}

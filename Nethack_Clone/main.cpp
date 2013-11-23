@@ -116,7 +116,7 @@ int main(int argc, char * argv[])
 	cout << "c - Enter cheat code! Codes can be found in documentation" << endl;
 	cout << "w,a,s,d - Move player" << endl;
 	cout << "i - Shows inventory, you can then pick an item to use (equip if equipment), drop an item, or exit" << endl;
-	cout << "u - Use item on floor, equips if item is equipment, consumes the item " <<
+	cout << "u - Use item on floor, equips if item is equipment, consumes the item (Essentially pickup/use/equip depending on the item" <<
 		"if it of a consumable type. Otherwise it adds the item to inventory." << endl;
 	cout << "q - Quit game and display your score" << endl << endl;
 
